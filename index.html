@@ -2,44 +2,2201 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>BECOME</title>
 
-<link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
-
 <meta name="theme-color" content="#05070a">
-
-<!-- IMPORTANT POUR IPHONE -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="apple-touch-icon" href="icon-192.png">
 
-</head>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
+<style>
+:root {
+  --bg: #05070a;
+  --s1: #0c0f14;
+  --s2: #131720;
+  --s3: #1c2230;
+  --border: #1e2535;
+  --border2: #2a3448;
+  --text: #e8edf5;
+  --muted: #4a5568;
+  --muted2: #7a8a9e;
+  --corps: #e85d3a;
+  --esprit: #2ec4a0;
+  --argent: #e8b84b;
+  --orga: #4ade9a;
+  --mental: #e84060;
+  --social: #9b7fe8;
+  --accent: #4f8ef7;
+  --accent2: #6fa8ff;
+  --gold: #e8b84b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Instrument Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, #1a2a4a22, transparent),
+    radial-gradient(ellipse 60% 40% at 80% 100%, #0a1a3a18, transparent);
+}
+
+body::after {
+  content:'';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.018;
+  pointer-events: none;
+  z-index: 998;
+}
+
+/* HEADER */
+.header {
+  padding: 16px 18px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: relative;
+  z-index: 10;
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 8px;
+  color: var(--text);
+  position: relative;
+}
+
+.logo::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.badges {
+  display: flex;
+  gap: 7px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--border2);
+}
+
+.badge-streak {
+  background: #160f04;
+  color: var(--gold);
+  border-color: #2a2010;
+}
+
+.badge-xp {
+  background: var(--s2);
+  color: var(--accent2);
+}
+
+.badge-level {
+  background: #0f1630;
+  color: #9fbfff;
+  border-color: #21315d;
+}
+
+/* SCROLL */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+/* NAV */
+.bottom-nav {
+  display: flex;
+  background: var(--s1);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 9px 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-btn .ni {
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+.nav-btn.active {
+  color: var(--accent2);
+}
+
+.nav-btn.active .ni {
+  transform: scale(1.2);
+}
+
+.nav-btn::after {
+  content:'';
+  position: absolute;
+  top: 0;
+  left: 25%;
+  right: 25%;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 0 0 2px 2px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.nav-btn.active::after {
+  opacity: 1;
+}
+
+/* VIEWS */
+.view {
+  display: none;
+  padding: 16px 16px 20px;
+  animation: fu 0.22s ease;
+}
+
+.view.active {
+  display: block;
+}
+
+@keyframes fu {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slabel {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* TODAY */
+.t-date {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--muted2);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.t-head {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  margin-bottom: 14px;
+}
+
+.t-head em {
+  font-style: normal;
+  color: var(--accent2);
+}
+
+.qcard {
+  background: linear-gradient(135deg, var(--s1), var(--s2));
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.qcard::before {
+  content: '”';
+  position: absolute;
+  top: -18px;
+  left: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 88px;
+  font-weight: 800;
+  color: var(--accent);
+  opacity: 0.06;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.qtext {
+  font-size: 13px;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--muted2);
+  position: relative;
+}
+
+.qauthor {
+  margin-top: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent2);
+  letter-spacing: 1px;
+}
+
+.ring-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--s1);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 13px;
+  margin-bottom: 12px;
+}
+
+.ring-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ring-wrap svg {
+  transform: rotate(-90deg);
+}
+
+.ring-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-pct {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.ring-lbl {
+  font-size: 8px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.ring-info-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.ring-info-sub {
+  font-size: 11px;
+  color: var(--muted2);
+  line-height: 1.4;
+}
+
+.level-bar-wrap {
+  margin-bottom: 14px;
+  background: var(--s1);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.level-bar-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 11px;
+}
+
+.level-rank {
+  font-weight: 700;
+  color: var(--accent2);
+}
+
+.level-xp-text {
+  color: var(--muted2);
+}
+
+.level-bar {
+  height: 6px;
+  background: var(--s2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.level-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.checkin-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #1a2d5a, #1e3570);
+  border: 1px solid #2a4080;
+  border-radius: 12px;
+  color: var(--accent2);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin-bottom: 14px;
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+.checkin-btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.pcard {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.pcard.checked {
+  border-color: currentColor;
+  background: var(--s2);
+}
+
+.pcard-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: currentColor;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+.pcard.checked .pcard-bar {
+  width: 100%;
+}
+
+.pcard-shine {
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.pcard.checked .pcard-shine {
+  opacity: 0.04;
+}
+
+.pcard-icon {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.pcard-name {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.pcard-task {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.pcard-check {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  transition: all 0.2s;
+}
+
+.pcard.checked .pcard-check {
+  background: currentColor;
+  border-color: currentColor;
+  color: #000;
+}
+
+/* CHALLENGES */
+.week-banner {
+  background: linear-gradient(135deg, #0d1a2e, #122040);
+  border: 1px solid #1e3055;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wb-icon {
+  font-size: 24px;
+}
+
+.wb-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--accent2);
+}
+
+.wb-sub {
+  font-size: 11px;
+  color: var(--muted2);
+  margin-top: 2px;
+}
+
+.gen-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #0a1f3a, #122540);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  color: var(--accent2);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin-bottom: 14px;
+  transition: all 0.2s;
+}
+
+.gen-btn:active {
+  opacity: 0.8;
+}
+
+.gen-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spin {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.chcard {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 13px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: opacity 0.2s;
+}
+
+.chcard.done {
+  opacity: 0.38;
+}
+
+.chcard::before {
+  content:'';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--cc, var(--accent));
+  border-radius: 3px 0 0 3px;
+}
+
+.ch-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.ch-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cc, var(--accent));
+}
+
+.ch-diff {
+  font-size: 10px;
+  color: var(--muted2);
+}
+
+.ch-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+.ch-desc {
+  font-size: 11px;
+  color: var(--muted2);
+  line-height: 1.5;
+}
+
+.ch-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.ch-xp {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent2);
+}
+
+.ch-status {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.ch-done {
+  font-size: 10px;
+  font-weight: 600;
+  color: #2ec4a0;
+}
+
+/* PROGRESS */
+.month-hero {
+  background: linear-gradient(135deg, var(--s1), var(--s2));
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.month-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.stat-item {
+  background: var(--s2);
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+}
+
+.stat-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--accent2);
+  line-height: 1;
+}
+
+.stat-lbl {
+  font-size: 9px;
+  color: var(--muted2);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.pp-item {
+  margin-bottom: 10px;
+}
+
+.pp-h {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.pp-name {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pp-pct {
+  font-size: 11px;
+  color: var(--muted2);
+}
+
+.prog-bar {
+  height: 4px;
+  background: var(--s2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.prog-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.cal-head {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.cal-head span {
+  text-align: center;
+  font-size: 9px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  gap: 2px;
+  margin-bottom: 16px;
+}
+
+.cal-cell {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: var(--s2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--muted);
+}
+
+.cal-cell.empty {
+  background: transparent;
+}
+
+.cal-cell.partial {
+  background: #4f8ef720;
+  color: var(--accent2);
+}
+
+.cal-cell.full {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+
+.cal-cell.today-c {
+  outline: 1.5px solid var(--accent2);
+  outline-offset: 1px;
+}
+
+/* LIBRARY */
+.lib-hero {
+  background: linear-gradient(135deg, #080e18, #0d1525);
+  border: 1px solid #162030;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.lib-hero h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.lib-hero p {
+  font-size: 11px;
+  color: var(--muted2);
+  line-height: 1.5;
+}
+
+.lib-filter {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+  scrollbar-width: none;
+}
+
+.lib-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.fbtn {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: none;
+  color: var(--muted2);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.fbtn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.bcard {
+  display: flex;
+  gap: 11px;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.bcard:active {
+  transform: scale(0.99);
+}
+
+.bcover {
+  width: 44px;
+  height: 62px;
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bcover::after {
+  content:'';
+  position:absolute;
+  right:0;
+  top:0;
+  bottom:0;
+  width:4px;
+  background:rgba(0,0,0,0.4);
+}
+
+.binfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.btitle {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.bauthor {
+  font-size: 10px;
+  color: var(--muted2);
+  margin-bottom: 4px;
+}
+
+.btags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-bottom: 4px;
+}
+
+.btag {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: var(--s2);
+  color: var(--muted2);
+}
+
+.bdesc {
+  font-size: 10px;
+  color: var(--muted2);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bright {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.brating {
+  font-size: 10px;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.bread-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  background: none;
+  color: var(--muted);
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.bread-btn.read {
+  background: var(--esprit);
+  border-color: var(--esprit);
+  color: #000;
+}
+
+/* IDENTITY */
+.id-hero {
+  background: linear-gradient(135deg, #0e0c16, #14102a);
+  border: 1px solid #20183a;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.id-big {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 38px;
+  letter-spacing: 6px;
+  line-height: 1;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--text) 40%, var(--social));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.id-hero p {
+  font-size: 11px;
+  color: var(--muted2);
+  line-height: 1.6;
+}
+
+.id-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  margin-bottom: 12px;
+  scrollbar-width: none;
+}
+
+.id-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.itab {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: none;
+  color: var(--muted2);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.itab.active {
+  background: var(--social);
+  border-color: var(--social);
+  color: #fff;
+}
+
+.id-section {
+  display: none;
+}
+
+.id-section.active {
+  display: block;
+}
+
+.prcard {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 13px;
+  margin-bottom: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.prnum {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--social);
+  opacity: 0.25;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 28px;
+}
+
+.prtitle {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.prtext {
+  font-size: 11px;
+  color: var(--muted2);
+  line-height: 1.6;
+}
+
+.law-card {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 13px;
+  margin-bottom: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.law-card::before {
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:2px;
+  background:linear-gradient(90deg, var(--gold), transparent);
+}
+
+.law-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.law-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.law-text {
+  font-size: 11px;
+  color: var(--muted2);
+  line-height: 1.6;
+}
+
+.law-example {
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--gold);
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.stoic-card {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--esprit);
+  border-radius: 0 13px 13px 0;
+  padding: 13px;
+  margin-bottom: 8px;
+}
+
+.stoic-author {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--esprit);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+.stoic-quote {
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--muted2);
+  margin-bottom: 6px;
+}
+
+.stoic-lesson {
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* MODAL */
+.moverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  z-index: 200;
+  align-items: flex-end;
+  backdrop-filter: blur(6px);
+}
+
+.moverlay.open {
+  display: flex;
+}
+
+.modal {
+  background: var(--s1);
+  border: 1px solid var(--border2);
+  border-radius: 20px 20px 0 0;
+  padding: 16px 16px 38px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  animation: su 0.28s ease;
+  position: relative;
+}
+
+@keyframes su {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.mhandle {
+  width: 32px;
+  height: 3px;
+  background: var(--border2);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+
+.mclose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--s2);
+  border: 1px solid var(--border2);
+  color: var(--muted2);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.mq {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-bottom: 6px;
+  margin-top: 11px;
+}
+
+.minput {
+  width: 100%;
+  background: var(--s2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: var(--text);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 13px;
+  resize: none;
+  min-height: 60px;
+  transition: border-color 0.2s;
+}
+
+.minput:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.msave {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #1a2d5a, #1e3a70);
+  border: 1px solid #2a4a90;
+  border-radius: 12px;
+  color: var(--accent2);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 14px;
+  letter-spacing: 1px;
+}
+
+/* BOOK MODAL */
+.bm-cover {
+  width: 64px;
+  height: 90px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 12px;
+}
+
+.bm-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.bm-author {
+  font-size: 11px;
+  color: var(--muted2);
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.bm-desc {
+  font-size: 12px;
+  color: var(--muted2);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.lesson-item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: flex-start;
+}
+
+.lesson-n {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--accent2);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.lesson-t {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.mark-btn {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid var(--esprit);
+  border-radius: 12px;
+  background: none;
+  color: var(--esprit);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+  margin-top: 12px;
+}
+
+.mark-btn.read {
+  background: var(--esprit);
+  color: #000;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 82px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: var(--text);
+  color: var(--bg);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.28s;
+  z-index: 300;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.xp-pop {
+  position: fixed;
+  bottom: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--accent2);
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  z-index: 301;
+  animation: xpFloat 0.9s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes xpFloat {
+  0% { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-26px); }
+}
+
+.level-up {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5,7,10,0.35);
+  z-index: 302;
+  pointer-events: none;
+  animation: fadeLevel 1.2s ease forwards;
+}
+
+.level-up-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--accent2);
+  background: #0d1320;
+  border: 1px solid #2a3a62;
+  border-radius: 14px;
+  padding: 14px 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+@keyframes fadeLevel {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  100% { opacity: 0; }
+}
+</style>
+</head>
 <body>
 
-<h1>BECOME</h1>
+<div class="header">
+  <div class="logo">BECOME</div>
+  <div class="badges">
+    <div class="badge badge-streak">🔥 <span id="sNum">0</span></div>
+    <div class="badge badge-xp">⚡ <span id="xNum">0</span></div>
+    <div class="badge badge-level">LVL <span id="lvlNum">0</span></div>
+  </div>
+</div>
 
-<p id="quote"></p>
+<div class="scroll-area" id="sa">
 
-<button onclick="newQuote()">Nouvelle citation</button>
+  <div class="view active" id="view-today">
+    <div class="t-date" id="tDate"></div>
+    <div class="t-head">Construis <em>l'homme</em><br>que tu veux être.</div>
 
-<h2>Objectif du jour</h2>
+    <div class="qcard">
+      <div class="qtext" id="qText"></div>
+      <div class="qauthor" id="qAuth"></div>
+    </div>
 
-<input id="goal" placeholder="Ton objectif">
-<button onclick="saveGoal()">Sauvegarder</button>
+    <div class="ring-row">
+      <div class="ring-wrap">
+        <svg width="72" height="72" viewBox="0 0 72 72">
+          <circle cx="36" cy="36" r="28" fill="none" stroke="#1c2230" stroke-width="5.5"/>
+          <circle id="ringC" cx="36" cy="36" r="28" fill="none" stroke="#4f8ef7" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="176"/>
+        </svg>
+        <div class="ring-inner">
+          <div class="ring-pct" id="rPct">0%</div>
+          <div class="ring-lbl">done</div>
+        </div>
+      </div>
+      <div>
+        <div class="ring-info-title" id="rTitle">C'est parti !</div>
+        <div class="ring-info-sub" id="rSub">Coche tes 6 piliers du jour.</div>
+      </div>
+    </div>
 
-<p id="saved"></p>
+    <div class="level-bar-wrap">
+      <div class="level-bar-top">
+        <div class="level-rank" id="rankName">Recrue</div>
+        <div class="level-xp-text" id="levelXpText">0 / 100 XP</div>
+      </div>
+      <div class="level-bar">
+        <div class="level-fill" id="levelFill"></div>
+      </div>
+    </div>
 
-<script src="script.js"></script>
+    <button class="checkin-btn" onclick="openM('checkin')">✍️ &nbsp;RÉFLEXION DU JOUR</button>
+
+    <div class="slabel">Piliers du jour</div>
+    <div class="pillars-grid" id="pGrid"></div>
+  </div>
+
+  <div class="view" id="view-challenges">
+    <div class="week-banner">
+      <div class="wb-icon">⚔️</div>
+      <div>
+        <div class="wb-title">DÉFIS DE LA SEMAINE</div>
+        <div class="wb-sub" id="wkLabel"></div>
+      </div>
+    </div>
+
+    <button class="gen-btn" id="genBtn" onclick="generateChallenges()">
+      ✦ &nbsp;GÉNÉRER DE NOUVEAUX DÉFIS
+    </button>
+
+    <div class="slabel">Cette semaine</div>
+    <div id="chList"></div>
+  </div>
+
+  <div class="view" id="view-progress">
+    <div class="month-hero">
+      <div class="month-name" id="mName"></div>
+      <div class="stats-grid" id="stGrid"></div>
+    </div>
+
+    <div class="slabel">Par pilier</div>
+    <div id="ppList"></div>
+
+    <div class="slabel">Calendrier du mois</div>
+    <div class="cal-head">
+      <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+    </div>
+    <div class="cal-grid" id="calG"></div>
+  </div>
+
+  <div class="view" id="view-library">
+    <div class="lib-hero">
+      <h2>📚 Bibliothèque</h2>
+      <p>Les livres qui transforment. Marque-les comme lus pour gagner +100 XP.</p>
+    </div>
+    <div class="lib-filter" id="lFilter"></div>
+    <div id="bList"></div>
+  </div>
+
+  <div class="view" id="view-identity">
+    <div class="id-hero">
+      <div class="id-big">HOMME</div>
+      <p>La philosophie, les lois du pouvoir, la sagesse des grands — tout ce qui forge le caractère.</p>
+    </div>
+
+    <div class="id-tabs">
+      <button class="itab active" onclick="showIdTab('principes',this)">7 Principes</button>
+      <button class="itab" onclick="showIdTab('48lois',this)">48 Lois</button>
+      <button class="itab" onclick="showIdTab('stoicisme',this)">Stoïcisme</button>
+      <button class="itab" onclick="showIdTab('mentalite',this)">Mentalité</button>
+    </div>
+
+    <div class="id-section active" id="id-principes"></div>
+    <div class="id-section" id="id-48lois"></div>
+    <div class="id-section" id="id-stoicisme"></div>
+    <div class="id-section" id="id-mentalite"></div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="showV('today',this)"><span class="ni">☀️</span>Aujourd'hui</button>
+  <button class="nav-btn" onclick="showV('challenges',this)"><span class="ni">⚔️</span>Défis</button>
+  <button class="nav-btn" onclick="showV('progress',this)"><span class="ni">📈</span>Progrès</button>
+  <button class="nav-btn" onclick="showV('library',this)"><span class="ni">📚</span>Livres</button>
+  <button class="nav-btn" onclick="showV('identity',this)"><span class="ni">🔥</span>Identité</button>
+</div>
+
+<div class="moverlay" id="m-checkin" onclick="closeOut(event,'checkin')">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <button class="mclose" onclick="closeM('checkin')">✕</button>
+    <h3>Réflexion du jour</h3>
+
+    <div class="mq">Ce que j'ai appris aujourd'hui</div>
+    <textarea class="minput" id="r1" placeholder="Une chose concrète et utile..."></textarea>
+
+    <div class="mq">Ce que j'aurais pu mieux faire</div>
+    <textarea class="minput" id="r2" placeholder="Sois honnête avec toi-même..."></textarea>
+
+    <div class="mq">Mon intention pour demain</div>
+    <textarea class="minput" id="r3" placeholder="Une action précise, pas un voeu..."></textarea>
+
+    <button class="msave" onclick="saveCheckin()">SAUVEGARDER — +10 XP</button>
+  </div>
+</div>
+
+<div class="moverlay" id="m-book" onclick="closeOut(event,'book')">
+  <div class="modal" id="bModal">
+    <div class="mhandle"></div>
+    <button class="mclose" onclick="closeM('book')">✕</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
-}
-</script>
+const P = [
+  {id:'corps',name:'Corps',icon:'💪',color:'#e85d3a',tasks:['Boire 2L d\\'eau','Dormir 8h ce soir','S\\'étirer 10 min','Manger équilibré','Pas de sucre ajouté','Récupération active']},
+  {id:'esprit',name:'Esprit',icon:'🧠',color:'#2ec4a0',tasks:['Lire 20 min','Regarder une vidéo utile','Apprendre un truc','Pas de scroll inutile','Méditer 5 min','Écrire ses pensées']},
+  {id:'argent',name:'Argent',icon:'💰',color:'#e8b84b',tasks:['Noter mes dépenses','Pas d\\'achat impulsif','Vérifier mon budget','Penser long terme','Analyser un actif','Économiser aujourd\\'hui']},
+  {id:'orga',name:'Orga',icon:'📋',color:'#4ade9a',tasks:['Planifier demain','Finir 3 tâches','Ranger mon espace','Pas de procrastination','Se lever à l\\'heure','Déconnecter à 22h']},
+  {id:'mental',name:'Mental',icon:'🔥',color:'#e84060',tasks:['Faire quelque chose de dur','Ne pas se plaindre','Tenir ma parole','Contrôler mes émotions','Sortir de ma zone','Douche froide']},
+  {id:'social',name:'Social',icon:'🤝',color:'#9b7fe8',tasks:['Contacter quelqu\\'un','Être pleinement présent','Donner sans attendre','Écouter vraiment','Faire une bonne action','Exprimer ma gratitude']}
+];
 
+const DEFAULT_CH = [
+  {id:'d1',pillar:'Mental',color:'#e84060',title:'Douche froide 7 jours',desc:'Chaque matin, 45 secondes d\\'eau froide. Sans exception. La discipline commence là.',diff:'⚡ Intense',xp:60},
+  {id:'d2',pillar:'Esprit',color:'#2ec4a0',title:'Lire 20 min par jour',desc:'Un vrai livre, pas un écran. 7 jours consécutifs. Même quand t\\'as pas envie.',diff:'🟡 Moyen',xp:35},
+  {id:'d3',pillar:'Corps',color:'#e85d3a',title:'Zéro sucre ajouté 5 jours',desc:'Supprime le sucre ajouté 5 jours. Observe l\\'énergie et la clarté mentale.',diff:'⚡ Intense',xp:50},
+  {id:'d4',pillar:'Orga',color:'#4ade9a',title:'Se lever à 6h30 sans snooze',desc:'Réveil 6h30, on se lève direct. 5 jours. La discipline commence au réveil.',diff:'🟡 Moyen',xp:40},
+  {id:'d5',pillar:'Argent',color:'#e8b84b',title:'Zéro dépense inutile',desc:'Une semaine sans acheter ce dont tu n\\'as pas besoin. Chaque euro compte.',diff:'🟢 Accessible',xp:25},
+  {id:'d6',pillar:'Social',color:'#9b7fe8',title:'Appeler quelqu\\'un de négligé',desc:'Une vraie conversation, pas un message. Quelqu\\'un d\\'important. Aujourd\\'hui.',diff:'🟢 Accessible',xp:20}
+];
+
+const BK = [
+  {id:'b1',title:'Atomic Habits',author:'James Clear',e:'⚛️',c:'#4f8ef7',cats:['Discipline','Organisation'],r:'9.4',desc:'La méthode scientifique pour construire de bonnes habitudes et éliminer les mauvaises. Le plus actionnable sur le changement.',lessons:['1% mieux chaque jour = 37x mieux en 1 an','L\\'identité avant le résultat : "je suis quelqu\\'un qui..."','Rends les bonnes habitudes évidentes, attractives, faciles, satisfaisantes','L\\'environnement bat la motivation — redesigne ton espace']},
+  {id:'b2',title:'Can\\'t Hurt Me',author:'David Goggins',e:'💪',c:'#e84060',cats:['Mental','Corps'],r:'9.6',desc:'L\\'histoire vraie de l\\'homme le plus dur du monde. Surmonter n\\'importe quel obstacle par la force mentale pure.',lessons:['Tu utilises à peine 40% de tes capacités réelles','Quand tu veux arrêter, t\\'es seulement à 40% de ta limite','Crée un accountability mirror : sois brutal avec toi-même','Le cookie jar : rappelle-toi tout ce que t\\'as déjà surmonté']},
+  {id:'b3',title:'Père Riche Père Pauvre',author:'Robert Kiyosaki',e:'💰',c:'#e8b84b',cats:['Argent'],r:'8.7',desc:'Le classique de l\\'éducation financière. Comment l\\'argent fonctionne vraiment — ce que l\\'école ne t\\'a jamais appris.',lessons:['Les riches achètent des actifs, les pauvres achètent des passifs','Ton salaire ne te rendra pas riche — tes investissements si','La peur et la cupidité contrôlent la plupart des décisions','Travaille pour apprendre, pas seulement pour gagner']},
+  {id:'b4',title:'L\\'Homme le plus riche de Babylone',author:'George S. Clason',e:'🏛️',c:'#e8b84b',cats:['Argent'],r:'8.9',desc:'Les lois universelles de la richesse en paraboles simples. Court, dense, intemporel. À lire deux fois.',lessons:['Épargne au moins 10% de tout ce que tu gagnes','Fais travailler ton argent pour toi','Ne place ton argent qu\\'en lieu sûr et productif','Dépense toujours moins que ce que tu gagnes']},
+  {id:'b5',title:'Why We Sleep',author:'Matthew Walker',e:'😴',c:'#2ec4a0',cats:['Corps','Esprit'],r:'9.1',desc:'Le sommeil est la chose la plus puissante pour ton corps et ton cerveau. Ce livre va changer ta façon de dormir.',lessons:['8h de sommeil = performances d\\'élite en tout','Moins de 7h accélère le vieillissement et détruit l\\'immunité','La lumière bleue avant de dormir sabote ta récupération','Le manque de sommeil détruit les performances au BJJ et partout']},
+  {id:'b6',title:'Pensées pour moi-même',author:'Marc Aurèle',e:'⚖️',c:'#9b7fe8',cats:['Mental','Philosophie'],r:'9.3',desc:'Le journal privé d\\'un des hommes les plus puissants de l\\'histoire. Le manuel de la maîtrise de soi.',lessons:['Tu ne contrôles que tes pensées et tes actions — rien d\\'autre','L\\'obstacle est le chemin : chaque difficulté est une opportunité','Fais ce qui est juste, pas ce qui est facile','Memento mori : la mort donne du sens à chaque journée']},
+  {id:'b7',title:'The 48 Laws of Power',author:'Robert Greene',e:'👑',c:'#e8b84b',cats:['Social','Philosophie'],r:'8.5',desc:'Les lois non-dites du pouvoir, de l\\'influence et de la dynamique humaine. Comment le monde fonctionne vraiment.',lessons:['Ne surpasse jamais ouvertement celui dont tu dépends','Protège ta réputation comme ta vie','Fais que les autres viennent à toi','Agis, parle peu — les actions parlent pour toi']},
+  {id:'b8',title:'Deep Work',author:'Cal Newport',e:'🎯',c:'#4ade9a',cats:['Organisation','Esprit'],r:'9.0',desc:'La capacité de travailler sans distraction sur des tâches complexes est la compétence la plus rare et précieuse.',lessons:['Le deep work est rare et donc extrêmement précieux','Les réseaux sociaux détruisent ta capacité de concentration','Planifie chaque heure de ta journée','La monotâche profonde bat la multitâche superficielle']},
+  {id:'b9',title:'The Obstacle Is the Way',author:'Ryan Holiday',e:'🪨',c:'#e85d3a',cats:['Mental','Philosophie'],r:'9.0',desc:'Comment transformer chaque obstacle en avantage. Le stoïcisme appliqué à la vie réelle. Lu par des athlètes de haut niveau.',lessons:['Perception : change ta façon de voir le problème','Action : avance toujours, même à petits pas','Volonté : accepte ce que tu ne contrôles pas','Chaque adversité contient une opportunité cachée']},
+  {id:'b10',title:'Siddhartha',author:'Hermann Hesse',e:'🌿',c:'#2ec4a0',cats:['Philosophie'],r:'9.2',desc:'Un voyage spirituel à travers la souffrance, l\\'éveil et la sagesse. Le livre qui force à poser les vraies questions.',lessons:['La connaissance s\\'enseigne, la sagesse se vit','Le présent est le seul moment qui existe vraiment','L\\'expérience directe vaut plus que tous les enseignements','L\\'acceptation est le début de la liberté']},
+  {id:'b11',title:'No Excuses',author:'Brian Tracy',e:'⚡',c:'#e8b84b',cats:['Discipline','Organisation'],r:'8.6',desc:'L\\'autodiscipline est la clé de tout succès. Les outils concrets pour éliminer les excuses et passer à l\\'action maintenant.',lessons:['L\\'autodiscipline s\\'apprend — c\\'est un muscle','Lance-toi dans les 2 premières secondes sans réfléchir','Chaque discipline positive affecte tous les autres domaines','Les plus réussis font ce que les autres trouvent pénible']},
+  {id:'b12',title:'Thinking Fast and Slow',author:'Daniel Kahneman',e:'🧩',c:'#4f8ef7',cats:['Esprit','Philosophie'],r:'8.8',desc:'Comment ton cerveau prend vraiment ses décisions — et pourquoi tu te trompes plus que tu ne le crois.',lessons:['Système 1 (rapide, intuitif) vs Système 2 (lent, raisonné)','Les biais cognitifs influencent TOUTES tes décisions','La confiance excessive est l\\'ennemi du bon jugement','Ralentis avant les décisions importantes']}
+];
+
+const PRINCIPLES = [
+  {n:'01',title:'Ta parole est ta loi',text:'Ce que tu dis, tu le fais. Sans exception, sans excuse. Chaque promesse tenue te renforce. Chaque promesse brisée te ronge.'},
+  {n:'02',title:'Responsabilité totale',text:'Tout ce qui t\\'arrive, c\\'est ta responsabilité. Même l\\'injuste. Cette mentalité te donne le pouvoir d\\'agir là où les autres attendent.'},
+  {n:'03',title:'Cherche l\\'inconfort',text:'La facilité te rend mou. Quand tu veux fuir quelque chose de difficile, c\\'est exactement là que tu dois aller.'},
+  {n:'04',title:'Construis, ne consomme pas',text:'Les grands hommes créent. Le scroll, les séries — c\\'est la vie des autres que tu regardes. Chaque heure consommée est une heure non construite.'},
+  {n:'05',title:'Maîtrise de soi d\\'abord',text:'Tu ne contrôles pas le monde. Mais tu contrôles ta réponse. Tes émotions, tes impulsions, tes choix — c\\'est ton seul territoire réel.'},
+  {n:'06',title:'Connais-toi honnêtement',text:'Pas la version flatteuse. Tes vraies forces, tes vraies faiblesses, tes vraies peurs. L\\'honnêteté radicale est le point de départ de tout.'},
+  {n:'07',title:'L\\'action bat la réflexion',text:'Penser c\\'est bien. Faire c\\'est mieux. Le plan imparfait exécuté aujourd\\'hui vaut infiniment plus que le plan parfait de demain.'}
+];
+
+const LAWS_48 = [
+  {n:'Loi 1',title:'Ne surpasse jamais le maître',text:'Fais toujours paraître ceux au-dessus de toi plus brillants que ce qu\\'ils sont. Le désir de les éclipser est une vanité dangereuse.',ex:'Exemple : Fouquet construisit un château plus beau que celui de Louis XIV. Il fut emprisonné à vie.'},
+  {n:'Loi 3',title:'Dissimule tes intentions',text:'Garde les gens dans l\\'ignorance et le déséquilibre en ne révélant jamais le but de tes actions. Ils ne peuvent se défendre de ce qu\\'ils ne voient pas.',ex:'Exemple : Otto von Bismarck masquait ses vraies ambitions derrière une façade de loyauté.'},
+  {n:'Loi 4',title:'Dis toujours moins que nécessaire',text:'Quand tu cherches à impressionner, plus tu parles, plus tu sembles ordinaire. La puissance grandit dans le silence.',ex:'Exemple : Louis XIV était célèbre pour répondre aux demandes complexes par un simple "Je verrai."'},
+  {n:'Loi 6',title:'Attire l\\'attention à tout prix',text:'Tout est jugé par l\\'apparence. Ne jamais se perdre dans la foule. Se faire remarquer est une forme de pouvoir.',ex:'Exemple : P.T. Barnum maîtrisait l\\'art de la controverse pour se faire voir.'},
+  {n:'Loi 9',title:'Gagne par tes actes, jamais par la discussion',text:'Toute victoire par l\\'argumentation est courte et superficielle. Démontre, n\\'explique pas.',ex:'Exemple : Michelangelo ne discutait pas — il montrait ses œuvres.'},
+  {n:'Loi 15',title:'Écrase ton ennemi complètement',text:'Plus tu laisses de place à l\\'ennemi, plus il se relèvera. Si tu dois frapper, frappe définitivement.',ex:'Exemple : Cyrus le Grand n\\'a jamais laissé un ennemi à moitié vaincu.'},
+  {n:'Loi 16',title:'Utilise l\\'absence pour renforcer ton pouvoir',text:'Trop présent, on perd de la valeur. L\\'absence crée l\\'envie et le respect.',ex:'Exemple : Les artistes qui se font rares deviennent des légendes.'},
+  {n:'Loi 25',title:'Recrée-toi',text:'N\\'accepte pas les rôles que la société t\\'impose. Forge une nouvelle identité qui s\\'impose.',ex:'Exemple : Napoleon Bonaparte a créé sa propre image héroïque de toutes pièces.'},
+  {n:'Loi 28',title:'Agis avec audace',text:'L\\'hésitation crée le danger. L\\'audace crée des problèmes qui se résolvent d\\'eux-mêmes. Toujours aller de l\\'avant.',ex:'Exemple : Alexandre le Grand traversait les rivières en premier pour galvaniser ses troupes.'},
+  {n:'Loi 34',title:'Sois royal dans tes manières',text:'Si tu agis comme si tu mérites moins, les autres t\\'en donneront moins. Agis en roi pour être traité comme tel.',ex:'Exemple : Thomas Cromwell exigeait un respect absolu même venu de rien.'},
+  {n:'Loi 38',title:'Pense comme tu veux mais agis comme les autres',text:'Choquer les conventions t\\'isole. L\\'orthodoxie en apparence te protège et te donne une liberté intérieure totale.',ex:''},
+  {n:'Loi 48',title:'N\\'assume jamais une forme définitive',text:'Accepte la fluidité et le changement. Seul ce qui est en mouvement peut survivre. Sois comme l\\'eau.',ex:'Exemple : Bruce Lee : "Sois l\\'eau, mon ami."'}
+];
+
+const STOIC = [
+  {author:'Marc Aurèle',quote:'"Tu as du pouvoir sur ton esprit, pas sur les événements extérieurs. Réalise cela, et tu trouveras la force."',lesson:'Tu ne peux contrôler que ta réaction. Tout le reste est hors de ta portée — cesse de te battre contre ce que tu ne maîtrises pas.'},
+  {author:'Épictète',quote:'"Ce n\\'est pas ce qui t\\'arrive qui te trouble, mais l\\'opinion que tu as de ce qui t\\'arrive."',lesson:'Tes émotions ne viennent pas des événements mais de l\\'interprétation que tu en fais. Change ta perspective, change ton monde.'},
+  {author:'Sénèque',quote:'"Commence à te voir tel que tu es réellement, non tel que tu voudrais être."',lesson:'L\\'honnêteté radicale sur soi-même est douloureuse mais libératrice. C\\'est le seul point de départ du progrès réel.'},
+  {author:'Marc Aurèle',quote:'"La vie de l\\'homme est un instant, son existence un flux, sa perception confuse."',lesson:'Memento mori. La mort est certaine. Cette réalité rend chaque moment, chaque choix, chaque action infiniment précieux.'},
+  {author:'Épictète',quote:'"Fais de ton mieux avec ce qui est en ton pouvoir, et prends le reste comme il vient."',lesson:'La dichotomie du contrôle : énergie totale sur ce qui dépend de toi, indifférence sereine sur ce qui n\\'en dépend pas.'},
+  {author:'Sénèque',quote:'"Toute la vie n\\'est qu\\'une préparation à la mort."',lesson:'Vis chaque journée comme si c\\'était à la fois la première et la dernière. L\\'urgence transforme la procrastination en action.'},
+  {author:'Marc Aurèle',quote:'"L\\'obstacle est le chemin. Ce qui se dresse contre toi finit par travailler pour toi."',lesson:'Retourne chaque problème en avantage. La résistance forge la force. L\\'adversité est la salle de gym du caractère.'},
+  {author:'Sénèque',quote:'"Nous souffrons plus dans notre imagination que dans la réalité."',lesson:'La majorité de tes peurs ne se réalisent jamais. L\\'anxiété est souvent plus destructrice que ce qu\\'elle anticipe.'}
+];
+
+const MENTALITE = [
+  {n:'01',title:'La règle des 40%',text:'Quand ton corps veut abandonner, ton esprit veut abandonner, tu n\\'es qu\\'à 40% de tes vraies capacités. Les 60% restants sont là, attendant d\\'être exploités.',src:'David Goggins'},
+  {n:'02',title:'Le mindset de croissance',text:'Les personnes qui réussissent croient que leurs capacités peuvent se développer. L\\'échec n\\'est pas une preuve d\\'incapacité mais une étape vers la maîtrise.',src:'Carol Dweck'},
+  {n:'03',title:'L\\'ennemi du bien est le parfait',text:'Le perfectionnisme est une forme de procrastination déguisée. Agir imparfaitement vaut infiniment mieux que de ne pas agir parfaitement.',src:'Voltaire / Silicon Valley'},
+  {n:'04',title:'La fenêtre d\\'Overton',text:'Ce que tu penses possible dans ta vie est limité par ce à quoi tu t\\'es exposé. Agrandir ta vision agrandit tes résultats.',src:'Concept politique adapté'},
+  {n:'05',title:'L\\'effet de l\\'identité',text:'Tu ne changeras pas durablement ton comportement sans changer ton identité. Pas "je veux maigrir" mais "je suis quelqu\\'un qui prend soin de son corps".',src:'James Clear'},
+  {n:'06',title:'La règle du 1 degré',text:'Un avion qui dévie de 1 degré de sa trajectoire atterrit dans un pays complètement différent. De petites corrections quotidiennes changent tout sur le long terme.',src:'Analogie de leadership'},
+  {n:'07',title:'La douleur a deux visages',text:'Il y a la douleur de la discipline — courte, productive. Et la douleur du regret — longue, stérile. Tu choisiras toujours l\\'une des deux.',src:'Jim Rohn'},
+  {n:'08',title:'L\\'ego est l\\'ennemi',text:'L\\'ego te fait croire que tu as accompli plus que tu ne l\\'as fait. Il t\\'empêche d\\'apprendre, de t\\'améliorer, d\\'écouter. Tue ton ego.',src:'Ryan Holiday'}
+];
+
+const QU = [
+  {t:'La discipline c\\'est de te souvenir de ce que tu veux vraiment.',a:'David Goggins'},
+  {t:'Tu n\\'as pas à être extrême, juste constant.',a:'James Clear'},
+  {t:'Souffre maintenant et vis le reste de ta vie en champion.',a:'Muhammad Ali'},
+  {t:'L\\'obstacle est le chemin.',a:'Marc Aurèle'},
+  {t:'Soit tu souffres la douleur de la discipline, soit celle du regret.',a:'Jim Rohn'},
+  {t:'Ce que tu fais aujourd\\'hui est un vote pour qui tu veux devenir.',a:'Atomic Habits'},
+  {t:'Ne cherche pas à être meilleur que les autres. Sois meilleur qu\\'hier.',a:'Inconnu'},
+  {t:'Un homme qui se maîtrise peut conquérir le monde.',a:'Goethe'},
+  {t:'La douleur que tu ressens aujourd\\'hui sera ta force de demain.',a:'Inconnu'},
+  {t:'Agir, ne jamais se plaindre. C\\'est la devise des gens qui réussissent.',a:'Inconnu'}
+];
+
+let activeF = 'Tous';
+let activeIdTab = 'principes';
+
+function gS() {
+  try {
+    return JSON.parse(localStorage.getItem('bcm3') || 'null') || nS();
+  } catch(e) {
+    return nS();
+  }
+}
+
+function nS() {
+  return {
+    checks: {},
+    challenges: null,
+    chGenWeek: null,
+    challengesDone: {},
+    books: {},
+    streak: 0,
+    lastDate: null,
+    xp: 0,
+    reflections: {}
+  };
+}
+
+function sv(s) {
+  try {
+    localStorage.setItem('bcm3', JSON.stringify(s));
+  } catch(e) {}
+}
+
+function pad(n) {
+  return n < 10 ? '0' + n : '' + n;
+}
+
+function tk() {
+  const d = new Date();
+  return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+}
+
+function getWeekKey() {
+  const now = new Date();
+  const day = now.getDay();
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+  const mon = new Date(now);
+  mon.setDate(diff);
+  return mon.getFullYear() + '-' + pad(mon.getMonth()+1) + '-' + pad(mon.getDate());
+}
+
+function toast(m) {
+  const t = document.getElementById('toast');
+  t.textContent = m;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function vibrate(ms = 18) {
+  if (navigator.vibrate) navigator.vibrate(ms);
+}
+
+function showXP(x) {
+  const el = document.createElement('div');
+  el.className = 'xp-pop';
+  el.textContent = '+' + x + ' XP';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 900);
+}
+
+function xpForLevel(lvl) {
+  return 100 + (lvl * lvl * 20);
+}
+
+function getLevel(xp) {
+  let lvl = 0;
+  let needed = xpForLevel(lvl);
+  let rest = xp;
+
+  while (rest >= needed) {
+    rest -= needed;
+    lvl++;
+    needed = xpForLevel(lvl);
+  }
+
+  return lvl;
+}
+
+function getXPProgress(xp) {
+  let lvl = 0;
+  let needed = xpForLevel(lvl);
+  let rest = xp;
+
+  while (rest >= needed) {
+    rest -= needed;
+    lvl++;
+    needed = xpForLevel(lvl);
+  }
+
+  return { current: rest, needed, level: lvl };
+}
+
+function getRank(lvl) {
+  if (lvl < 3) return 'Recrue';
+  if (lvl < 6) return 'Disciple';
+  if (lvl < 10) return 'Guerrier';
+  if (lvl < 15) return 'Élite';
+  if (lvl < 20) return 'Maître';
+  return 'Légende';
+}
+
+function maybeLevelUp(oldXP, newXP) {
+  const oldLvl = getLevel(oldXP);
+  const newLvl = getLevel(newXP);
+  if (newLvl > oldLvl) {
+    const wrap = document.createElement('div');
+    wrap.className = 'level-up';
+    wrap.innerHTML = '<div class="level-up-text">LEVEL UP — ' + newLvl + '</div>';
+    document.body.appendChild(wrap);
+    vibrate(45);
+    setTimeout(() => wrap.remove(), 1200);
+  }
+}
+
+function addXP(amount, message) {
+  const s = gS();
+  const oldXP = s.xp || 0;
+  s.xp = oldXP + amount;
+  sv(s);
+  showXP(amount);
+  maybeLevelUp(oldXP, s.xp);
+  if (message) toast(message);
+  renderHeader();
+  return s;
+}
+
+function renderHeader() {
+  const s = gS();
+  document.getElementById('sNum').textContent = s.streak || 0;
+  document.getElementById('xNum').textContent = s.xp || 0;
+  document.getElementById('lvlNum').textContent = getLevel(s.xp || 0);
+}
+
+function showV(n, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + n).classList.add('active');
+  if (btn) btn.classList.add('active');
+  document.getElementById('sa').scrollTop = 0;
+  if (n === 'progress') renderProg();
+  if (n === 'library') renderLib();
+  if (n === 'identity') renderId();
+  if (n === 'challenges') renderCh();
+  if (n === 'today') renderToday();
+}
+
+function renderToday() {
+  const s = gS();
+  const today = tk();
+  const d = new Date();
+  const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+  document.getElementById('tDate').textContent = days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+
+  const q = QU[d.getDate() % QU.length];
+  document.getElementById('qText').textContent = q.t;
+  document.getElementById('qAuth').textContent = '— ' + q.a;
+
+  const tc = s.checks[today] || {};
+  const done = P.filter(p => tc[p.id]).length;
+  const pct = Math.round((done / P.length) * 100);
+
+  document.getElementById('rPct').textContent = pct + '%';
+  const circ = 176;
+  document.getElementById('ringC').style.strokeDashoffset = circ - (circ * pct / 100);
+
+  const titles = ['C\\'est parti !','Bon début !','Bonne dynamique !','Tu cartonnes !','Presque !','Journée parfaite ! 🔥'];
+  const subs = [
+    'Coche tes 6 piliers du jour.',
+    'Continue sur ta lancée !',
+    done + '/6 cochés. Mi-chemin !',
+    'Plus que ' + (P.length-done) + ' pilier(s) !',
+    'Un dernier effort !',
+    'Tous les piliers cochés !'
+  ];
+
+  document.getElementById('rTitle').textContent = titles[Math.min(done, 5)];
+  document.getElementById('rSub').textContent = subs[Math.min(done, 5)];
+
+  const lvlProgress = getXPProgress(s.xp || 0);
+  const fill = Math.round((lvlProgress.current / lvlProgress.needed) * 100);
+  document.getElementById('rankName').textContent = getRank(lvlProgress.level);
+  document.getElementById('levelXpText').textContent = lvlProgress.current + ' / ' + lvlProgress.needed + ' XP';
+  document.getElementById('levelFill').style.width = fill + '%';
+
+  const g = document.getElementById('pGrid');
+  let html = '';
+  P.forEach(p => {
+    const checked = !!tc[p.id];
+    const ti = d.getDate() % p.tasks.length;
+    html += '<div class="pcard' + (checked ? ' checked' : '') + '" style="color:' + p.color + '" onclick="toggleP(\\'' + p.id + '\\')">' +
+      '<div class="pcard-shine"></div>' +
+      '<div class="pcard-bar"></div>' +
+      '<div class="pcard-icon">' + p.icon + '</div>' +
+      '<div class="pcard-name">' + p.name + '</div>' +
+      '<div class="pcard-task">' + p.tasks[ti] + '</div>' +
+      '<div class="pcard-check">' + (checked ? '✓' : '') + '</div>' +
+      '</div>';
+  });
+  g.innerHTML = html;
+
+  renderHeader();
+}
+
+function updateStreak(s, today) {
+  const y = new Date();
+  y.setDate(y.getDate() - 1);
+  const yk = y.getFullYear() + '-' + pad(y.getMonth()+1) + '-' + pad(y.getDate());
+
+  if (s.lastDate === yk) s.streak = (s.streak || 0) + 1;
+  else if (s.lastDate !== today) s.streak = 1;
+
+  s.lastDate = today;
+
+  if (s.streak > 0 && s.streak % 7 === 0) {
+    const oldXP = s.xp || 0;
+    s.xp = oldXP + 50;
+    maybeLevelUp(oldXP, s.xp);
+    showXP(50);
+    toast('🔥 Bonus streak 7 jours : +50 XP');
+  }
+}
+
+function toggleP(id) {
+  const s = gS();
+  const today = tk();
+  if (!s.checks[today]) s.checks[today] = {};
+
+  const wasChecked = !!s.checks[today][id];
+  s.checks[today][id] = !wasChecked;
+
+  if (s.checks[today][id]) {
+    const oldXP = s.xp || 0;
+    s.xp = oldXP + 5;
+    showXP(5);
+    maybeLevelUp(oldXP, s.xp);
+    vibrate();
+
+    const allDone = P.every(p => s.checks[today][p.id]);
+    if (allDone) {
+      const beforeBonus = s.xp;
+      s.xp += 20;
+      showXP(20);
+      maybeLevelUp(beforeBonus, s.xp);
+      updateStreak(s, today);
+      toast('🔥 Journée parfaite ! +20 XP bonus');
+      vibrate(35);
+    } else {
+      toast('✓ ' + P.find(p => p.id === id).name + ' +5 XP');
+    }
+  }
+
+  sv(s);
+  renderToday();
+}
+
+function renderCh() {
+  const s = gS();
+  const wk = getWeekKey();
+  document.getElementById('wkLabel').textContent = 'Semaine du lundi — défis personnels';
+
+  let chs = s.challenges;
+  if (!chs || s.chGenWeek !== wk) chs = DEFAULT_CH;
+
+  const list = document.getElementById('chList');
+  let html = '';
+  chs.forEach(c => {
+    const done = s.challengesDone && s.challengesDone[c.id];
+    html += '<div class="chcard' + (done ? ' done' : '') + '" style="--cc:' + (c.color || '#4f8ef7') + '" onclick="toggleCh(\\'' + c.id + '\\',' + (c.xp || 30) + ')">' +
+      '<div class="ch-top"><span class="ch-tag">' + c.pillar + '</span><span class="ch-diff">' + c.diff + '</span></div>' +
+      '<div class="ch-title">' + c.title + '</div>' +
+      '<div class="ch-desc">' + c.desc + '</div>' +
+      '<div class="ch-foot"><span class="ch-xp">+' + (c.xp || 30) + ' XP</span>' +
+      (done ? '<span class="ch-done">✓ Complété</span>' : '<span class="ch-status">Tap pour valider</span>') +
+      '</div></div>';
+  });
+  list.innerHTML = html;
+  renderHeader();
+}
+
+function toggleCh(id, xp) {
+  const s = gS();
+  if (!s.challengesDone) s.challengesDone = {};
+  s.challengesDone[id] = !s.challengesDone[id];
+
+  if (s.challengesDone[id]) {
+    const oldXP = s.xp || 0;
+    s.xp = oldXP + xp;
+    showXP(xp);
+    maybeLevelUp(oldXP, s.xp);
+    toast('🏆 Défi complété ! +' + xp + ' XP');
+    vibrate(25);
+  }
+
+  sv(s);
+  renderCh();
+}
+
+async function generateChallenges() {
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin">◌</span> &nbsp;Génération...';
+
+  const s = gS();
+  const pool = [
+    {pillar:'Mental',color:'#e84060',title:'Zéro plainte pendant 24h',desc:'Dès que tu veux te plaindre, tu te tais et tu agis.',diff:'🟡 Moyen',xp:30},
+    {pillar:'Corps',color:'#e85d3a',title:'10 000 pas par jour',desc:'Bouge vraiment aujourd\\'hui. Ton énergie vient du mouvement.',diff:'🟢 Accessible',xp:25},
+    {pillar:'Esprit',color:'#2ec4a0',title:'30 min sans téléphone',desc:'Lis, réfléchis ou écris. Mais aucun scroll.',diff:'🟡 Moyen',xp:35},
+    {pillar:'Argent',color:'#e8b84b',title:'Note toutes tes dépenses',desc:'Chaque euro doit être vu. Le flou te rend faible.',diff:'🟢 Accessible',xp:20},
+    {pillar:'Orga',color:'#4ade9a',title:'Inbox à zéro',desc:'Nettoie ton espace numérique et mental.',diff:'🟡 Moyen',xp:30},
+    {pillar:'Social',color:'#9b7fe8',title:'Message utile à quelqu\\'un',desc:'Apporte de la valeur à une personne aujourd\\'hui.',diff:'🟢 Accessible',xp:20},
+    {pillar:'Mental',color:'#e84060',title:'Faire une chose évitée',desc:'La première chose que tu repousses, tu la fais aujourd\\'hui.',diff:'⚡ Intense',xp:45},
+    {pillar:'Corps',color:'#e85d3a',title:'Aucun snack inutile',desc:'Tu manges pour te construire, pas pour fuir l\\'ennui.',diff:'🟡 Moyen',xp:30},
+    {pillar:'Esprit',color:'#2ec4a0',title:'Écrire 10 lignes de journal',desc:'Mets de l\\'ordre dans ta tête par écrit.',diff:'🟢 Accessible',xp:20},
+    {pillar:'Orga',color:'#4ade9a',title:'Planifier demain ce soir',desc:'Une journée gagnée commence la veille.',diff:'🟢 Accessible',xp:20}
+  ];
+
+  const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 6).map((c, i) => ({
+    ...c,
+    id: 'g' + (i + 1)
+  }));
+
+  s.challenges = shuffled;
+  s.chGenWeek = getWeekKey();
+  s.challengesDone = {};
+  sv(s);
+  renderCh();
+  toast('✦ Nouveaux défis générés');
+  btn.disabled = false;
+  btn.innerHTML = '✦ &nbsp;GÉNÉRER DE NOUVEAUX DÉFIS';
+}
+
+function st(v, l) {
+  return '<div class="stat-item"><div class="stat-val">' + v + '</div><div class="stat-lbl">' + l + '</div></div>';
+}
+
+function renderProg() {
+  const s = gS();
+  const d = new Date();
+  const ms = ['JANVIER','FÉVRIER','MARS','AVRIL','MAI','JUIN','JUILLET','AOÛT','SEPTEMBRE','OCTOBRE','NOVEMBRE','DÉCEMBRE'];
+  document.getElementById('mName').textContent = ms[d.getMonth()] + ' ' + d.getFullYear();
+
+  let perfDays = 0;
+  Object.values(s.checks).forEach(day => {
+    if (P.every(p => day[p.id])) perfDays++;
+  });
+
+  const bR = Object.values(s.books).filter(Boolean).length;
+
+  document.getElementById('stGrid').innerHTML =
+    st(s.streak || 0, 'Streak 🔥') +
+    st(s.xp || 0, 'XP ⚡') +
+    st(perfDays, 'Jours parfaits') +
+    st(bR, 'Livres lus 📚');
+
+  const pl = document.getElementById('ppList');
+  let pHtml = '';
+  P.forEach(p => {
+    let cnt = 0;
+    const tot = Math.max(Object.keys(s.checks).length, 1);
+    Object.values(s.checks).forEach(day => { if (day[p.id]) cnt++; });
+    const pct = Math.round((cnt / tot) * 100);
+    pHtml += '<div class="pp-item"><div class="pp-h"><span class="pp-name">' + p.icon + ' ' + p.name + '</span><span class="pp-pct">' + pct + '%</span></div><div class="prog-bar"><div class="prog-fill" style="width:' + pct + '%;background:' + p.color + '"></div></div></div>';
+  });
+  pl.innerHTML = pHtml;
+
+  const cal = document.getElementById('calG');
+  let cHtml = '';
+  const fd = new Date(d.getFullYear(), d.getMonth(), 1).getDay();
+  const off = (fd === 0) ? 6 : fd - 1;
+  for (let i = 0; i < off; i++) cHtml += '<div class="cal-cell empty"></div>';
+  const dim = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+  const today = tk();
+
+  for (let i = 1; i <= dim; i++) {
+    const key = d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(i);
+    const dc = s.checks[key] || {};
+    const cnt2 = Object.values(dc).filter(Boolean).length;
+    let cls = 'cal-cell';
+    if (key === today) cls += ' today-c';
+    if (cnt2 === P.length) cls += ' full';
+    else if (cnt2 > 0) cls += ' partial';
+    cHtml += '<div class="' + cls + '">' + i + '</div>';
+  }
+  cal.innerHTML = cHtml;
+}
+
+function renderLib() {
+  const s = gS();
+  const cats = ['Tous','Mental','Corps','Argent','Esprit','Discipline','Organisation','Social','Philosophie'];
+  const fEl = document.getElementById('lFilter');
+
+  let fHtml = '';
+  cats.forEach(cat => {
+    fHtml += '<button class="fbtn' + (activeF === cat ? ' active' : '') + '" onclick="setFilter(\\'' + cat + '\\')">' + cat + '</button>';
+  });
+  fEl.innerHTML = fHtml;
+
+  const list = document.getElementById('bList');
+  let html = '';
+  BK.filter(b => activeF === 'Tous' || b.cats.indexOf(activeF) !== -1).forEach(b => {
+    const read = s.books[b.id];
+    html += '<div class="bcard" onclick="openBook(\\'' + b.id + '\\')">' +
+      '<div class="bcover" style="background:' + b.c + '18">' + b.e + '</div>' +
+      '<div class="binfo"><div class="btitle">' + b.title + '</div><div class="bauthor">' + b.author + '</div>' +
+      '<div class="btags">' + b.cats.map(c => '<span class="btag">' + c + '</span>').join('') + '</div>' +
+      '<div class="bdesc">' + b.desc + '</div></div>' +
+      '<div class="bright"><span class="brating">★ ' + b.r + '</span>' +
+      '<button class="bread-btn' + (read ? ' read' : '') + '" onclick="event.stopPropagation();event.preventDefault();toggleRead(\\'' + b.id + '\\')">' + (read ? '✓' : '○') + '</button></div>' +
+      '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function setFilter(cat) {
+  activeF = cat;
+  renderLib();
+}
+
+function toggleRead(id) {
+  const s = gS();
+  s.books[id] = !s.books[id];
+  if (s.books[id]) {
+    const oldXP = s.xp || 0;
+    s.xp = oldXP + 100;
+    showXP(100);
+    maybeLevelUp(oldXP, s.xp);
+    toast('📚 Lu ! +100 XP');
+    vibrate(25);
+  }
+  sv(s);
+  renderHeader();
+  renderLib();
+}
+
+function openBook(id) {
+  const b = BK.find(x => x.id === id);
+  if (!b) return;
+  const s = gS();
+  const read = s.books[id];
+
+  document.getElementById('bModal').innerHTML =
+    '<div class="mhandle"></div>' +
+    '<button class="mclose" onclick="closeM(\\'book\\')">✕</button>' +
+    '<div class="bm-cover" style="background:' + b.c + '20">' + b.e + '</div>' +
+    '<div class="bm-title">' + b.title + '</div>' +
+    '<div class="bm-author">' + b.author + '</div>' +
+    '<div class="bm-desc">' + b.desc + '</div>' +
+    '<div class="slabel" style="margin-top:4px">Ce que tu vas apprendre</div>' +
+    b.lessons.map((l, i) => '<div class="lesson-item"><span class="lesson-n">0' + (i+1) + '</span><span class="lesson-t">' + l + '</span></div>').join('') +
+    '<button class="mark-btn' + (read ? ' read' : '') + '" onclick="toggleRead(\\'' + id + '\\');closeM(\\'book\\')">' + (read ? '✓ Lu et assimilé' : 'Marquer comme lu — +100 XP') + '</button>';
+
+  document.getElementById('m-book').classList.add('open');
+}
+
+function showIdTab(tab, btn) {
+  activeIdTab = tab;
+  document.querySelectorAll('.id-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.itab').forEach(b => b.classList.remove('active'));
+  document.getElementById('id-' + tab).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+function renderId() {
+  const p = document.getElementById('id-principes');
+  p.innerHTML = PRINCIPLES.map(pr =>
+    '<div class="prcard"><div class="prnum">' + pr.n + '</div><div><div class="prtitle">' + pr.title + '</div><div class="prtext">' + pr.text + '</div></div></div>'
+  ).join('');
+
+  const l = document.getElementById('id-48lois');
+  l.innerHTML = LAWS_48.map(lw =>
+    '<div class="law-card"><div class="law-num">' + lw.n + '</div><div class="law-title">' + lw.title + '</div><div class="law-text">' + lw.text + '</div>' + (lw.ex ? '<div class="law-example">' + lw.ex + '</div>' : '') + '</div>'
+  ).join('');
+
+  const st = document.getElementById('id-stoicisme');
+  st.innerHTML = STOIC.map(s =>
+    '<div class="stoic-card"><div class="stoic-author">' + s.author + '</div><div class="stoic-quote">' + s.quote + '</div><div class="stoic-lesson">→ ' + s.lesson + '</div></div>'
+  ).join('');
+
+  const m = document.getElementById('id-mentalite');
+  m.innerHTML = MENTALITE.map(mn =>
+    '<div class="prcard"><div class="prnum">' + mn.n + '</div><div><div class="prtitle">' + mn.title + '</div><div class="prtext">' + mn.text + '</div><div style="margin-top:5px;font-size:10px;color:var(--accent2);font-weight:600;letter-spacing:1px">' + mn.src + '</div></div></div>'
+  ).join('');
+
+  document.querySelectorAll('.id-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('id-' + activeIdTab).classList.add('active');
+}
+
+function openM(n) {
+  document.getElementById('m-' + n).classList.add('open');
+}
+
+function closeM(n) {
+  document.getElementById('m-' + n).classList.remove('open');
+}
+
+function closeOut(e, n) {
+  if (e.target === document.getElementById('m-' + n)) closeM(n);
+}
+
+function saveCheckin() {
+  const s = gS();
+  const today = tk();
+  s.reflections[today] = {
+    learned: document.getElementById('r1').value,
+    improve: document.getElementById('r2').value,
+    intention: document.getElementById('r3').value
+  };
+
+  const oldXP = s.xp || 0;
+  s.xp = oldXP + 10;
+  sv(s);
+  showXP(10);
+  maybeLevelUp(oldXP, s.xp);
+  closeM('checkin');
+  renderHeader();
+  toast('✓ Réflexion sauvegardée — +10 XP');
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
+  });
+}
+
+renderHeader();
+renderToday();
+renderCh();
+renderId();
+</script>
 </body>
 </html>
