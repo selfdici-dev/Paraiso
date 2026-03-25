@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BECOME</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#05070a">
+
+<!-- IMPORTANT POUR IPHONE -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+</head>
+
+<body>
+
+<h1>BECOME</h1>
+
+<p id="quote"></p>
+
+<button onclick="newQuote()">Nouvelle citation</button>
+
+<h2>Objectif du jour</h2>
+
+<input id="goal" placeholder="Ton objectif">
+<button onclick="saveGoal()">Sauvegarder</button>
+
+<p id="saved"></p>
+
+<script src="script.js"></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
+</script>
+
+</body>
+</html>
