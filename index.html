@@ -1,985 +1,303 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>BECOME</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BECOME ELITE</title>
 
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#05070a">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+--bg:#0a0f1a;
+--card:#111827;
+--accent:#2563eb;
+--text:#fff;
+--muted:#9ca3af;
+--danger:#ef4444;
+--success:#22c55e;
+}
 
-  <style>
-    :root {
-      --bg: #05070a;
-      --s1: #0c0f14;
-      --s2: #131720;
-      --border: #1e2535;
-      --border2: #2a3448;
-      --text: #e8edf5;
-      --muted: #7a8a9e;
-      --accent: #4f8ef7;
-      --accent2: #6fa8ff;
-      --gold: #e8b84b;
-      --corps: #e85d3a;
-      --esprit: #2ec4a0;
-      --argent: #e8b84b;
-      --orga: #4ade9a;
-      --mental: #e84060;
-      --social: #9b7fe8;
-    }
+body{
+margin:0;
+font-family:system-ui;
+background:var(--bg);
+color:var(--text);
+}
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
+.header{
+padding:15px;
+display:flex;
+justify-content:space-between;
+background:var(--card);
+font-weight:bold;
+}
 
-    html, body {
-      height: 100%;
-    }
+.stats{
+font-size:12px;
+color:var(--muted);
+}
 
-    body {
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      height: 100dvh;
-      overflow: hidden;
-    }
+.section{
+padding:15px;
+display:none;
+}
 
-    .header {
-      padding: 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--bg);
-    }
+.section.active{
+display:block;
+}
 
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: 6px;
-    }
+.card{
+background:var(--card);
+padding:14px;
+border-radius:12px;
+margin-bottom:10px;
+}
 
-    .badges {
-      display: flex;
-      gap: 8px;
-    }
+.btn{
+background:var(--accent);
+padding:12px;
+border-radius:10px;
+text-align:center;
+margin-top:10px;
+cursor:pointer;
+}
 
-    .badge {
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 10px;
-      border: 1px solid var(--border2);
-      background: var(--s1);
-    }
+.btn-danger{
+background:var(--danger);
+}
 
-    .scroll {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-    }
+.btn-success{
+background:var(--success);
+}
 
-    .view {
-      display: none;
-    }
+.done{
+opacity:0.3;
+text-decoration:line-through;
+}
 
-    .view.active {
-      display: block;
-    }
+.nav{
+position:fixed;
+bottom:0;
+width:100%;
+display:flex;
+background:#0f172a;
+}
 
-    .date {
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 6px;
-    }
+.nav button{
+flex:1;
+padding:10px;
+background:none;
+border:none;
+color:var(--muted);
+}
 
-    .title {
-      font-size: 28px;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
+.active-btn{
+color:var(--accent);
+}
 
-    .title em {
-      font-style: normal;
-      color: var(--accent2);
-    }
+.big{
+font-size:28px;
+font-weight:bold;
+}
 
-    .card {
-      background: var(--s1);
-      border: 1px solid var(--border2);
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-
-    .quote {
-      font-style: italic;
-      line-height: 1.5;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .author {
-      font-size: 12px;
-      color: var(--accent2);
-      font-weight: 700;
-    }
-
-    .progress-line {
-      height: 8px;
-      background: var(--s2);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      transition: width .3s ease;
-    }
-
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      margin-bottom: 6px;
-      color: var(--muted);
-    }
-
-    .primary-btn {
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      padding: 12px;
-      background: linear-gradient(135deg, #1a2d5a, #1e3570);
-      color: var(--accent2);
-      font-weight: 700;
-      margin-bottom: 14px;
-    }
-
-    .section-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--muted);
-      margin-bottom: 10px;
-      margin-top: 4px;
-    }
-
-    .pillars {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .pillar {
-      background: var(--s1);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      position: relative;
-    }
-
-    .pillar.done {
-      background: var(--s2);
-      border-color: currentColor;
-    }
-
-    .pillar-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      margin-bottom: 8px;
-    }
-
-    .pillar-icon {
-      font-size: 20px;
-    }
-
-    .check {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 1px solid var(--border2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-    }
-
-    .pillar.done .check {
-      background: currentColor;
-      color: #000;
-      border-color: currentColor;
-    }
-
-    .pillar-name {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .pillar-task {
-      font-size: 12px;
-      line-height: 1.35;
-    }
-
-    .challenge {
-      background: var(--s1);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--accent);
-      border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 8px;
-    }
-
-    .challenge.done {
-      opacity: .45;
-    }
-
-    .challenge-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 6px;
-      font-size: 11px;
-    }
-
-    .challenge-title {
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .challenge-desc {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.4;
-      margin-bottom: 6px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .stat {
-      background: var(--s1);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-    }
-
-    .stat-val {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--accent2);
-    }
-
-    .stat-lbl {
-      font-size: 10px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 2px;
-    }
-
-    .book {
-      background: var(--s1);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 8px;
-    }
-
-    .book-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      align-items: start;
-    }
-
-    .book-title {
-      font-weight: 700;
-      margin-bottom: 3px;
-    }
-
-    .book-author {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .book-btn {
-      border: 1px solid var(--border2);
-      background: transparent;
-      color: var(--text);
-      border-radius: 999px;
-      width: 28px;
-      height: 28px;
-      flex-shrink: 0;
-    }
-
-    .book-btn.read {
-      background: var(--esprit);
-      color: #000;
-      border-color: var(--esprit);
-    }
-
-    .identity-card {
-      background: var(--s1);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 8px;
-    }
-
-    .identity-title {
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .identity-text {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .nav {
-      display: flex;
-      border-top: 1px solid var(--border);
-      background: var(--s1);
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-
-    .nav-btn {
-      flex: 1;
-      background: none;
-      border: none;
-      color: var(--muted);
-      padding: 10px 2px;
-      font-size: 10px;
-      text-transform: uppercase;
-    }
-
-    .nav-btn.active {
-      color: var(--accent2);
-    }
-
-    .modal-bg {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.8);
-      align-items: flex-end;
-      z-index: 50;
-    }
-
-    .modal-bg.open {
-      display: flex;
-    }
-
-    .modal {
-      width: 100%;
-      background: var(--s1);
-      border-top-left-radius: 18px;
-      border-top-right-radius: 18px;
-      padding: 16px 16px 30px;
-      border: 1px solid var(--border2);
-    }
-
-    .modal h3 {
-      margin-bottom: 12px;
-    }
-
-    .modal-label {
-      font-size: 11px;
-      color: var(--muted);
-      margin: 10px 0 6px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 72px;
-      border-radius: 12px;
-      border: 1px solid var(--border2);
-      background: var(--s2);
-      color: var(--text);
-      padding: 12px;
-      font-family: Arial, sans-serif;
-    }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 86px;
-      transform: translateX(-50%);
-      background: #fff;
-      color: #000;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 13px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .2s ease;
-      z-index: 60;
-    }
-
-    .toast.show {
-      opacity: 1;
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <div class="header">
-    <div class="logo">BECOME</div>
-    <div class="badges">
-      <div class="badge">🔥 <span id="streakNum">0</span></div>
-      <div class="badge">⚡ <span id="xpNum">0</span></div>
-      <div class="badge">LVL <span id="levelNum">0</span></div>
-    </div>
-  </div>
-
-  <div class="scroll" id="scrollArea">
-    <div class="view active" id="view-today">
-      <div class="date" id="todayDate"></div>
-      <div class="title">Construis <em>l'homme</em><br>que tu veux être.</div>
-
-      <div class="card">
-        <div class="quote" id="quoteText"></div>
-        <div class="author" id="quoteAuthor"></div>
-      </div>
-
-      <div class="card">
-        <div class="progress-meta">
-          <span id="rankText">Recrue</span>
-          <span id="xpProgressText">0 / 100 XP</span>
-        </div>
-        <div class="progress-line">
-          <div class="progress-fill" id="xpProgressFill"></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="progress-meta">
-          <span id="dayTitle">C'est parti !</span>
-          <span id="dayPercent">0%</span>
-        </div>
-        <div class="progress-line">
-          <div class="progress-fill" id="dayProgressFill"></div>
-        </div>
-      </div>
-
-      <button class="primary-btn" onclick="openCheckin()">✍️ RÉFLEXION DU JOUR</button>
-
-      <div class="section-label">Piliers du jour</div>
-      <div class="pillars" id="pillarsGrid"></div>
-    </div>
-
-    <div class="view" id="view-challenges">
-      <div class="section-label">Défis de la semaine</div>
-      <button class="primary-btn" onclick="generateChallenges()">✦ GÉNÉRER DE NOUVEAUX DÉFIS</button>
-      <div id="challengesList"></div>
-    </div>
-
-    <div class="view" id="view-progress">
-      <div class="section-label">Stats</div>
-      <div class="stats" id="statsGrid"></div>
-      <div class="section-label">Par pilier</div>
-      <div id="pillarStats"></div>
-    </div>
-
-    <div class="view" id="view-library">
-      <div class="section-label">Bibliothèque</div>
-      <div id="booksList"></div>
-    </div>
-
-    <div class="view" id="view-identity">
-      <div class="section-label">Identité</div>
-      <div id="identityList"></div>
-    </div>
-  </div>
-
-  <div class="nav">
-    <button class="nav-btn active" onclick="showView('today', this)">☀️<br>Aujourd'hui</button>
-    <button class="nav-btn" onclick="showView('challenges', this)">⚔️<br>Défis</button>
-    <button class="nav-btn" onclick="showView('progress', this)">📈<br>Progrès</button>
-    <button class="nav-btn" onclick="showView('library', this)">📚<br>Livres</button>
-    <button class="nav-btn" onclick="showView('identity', this)">🔥<br>Identité</button>
-  </div>
-
-  <div class="modal-bg" id="checkinModalBg" onclick="closeCheckinOutside(event)">
-    <div class="modal">
-      <h3>Réflexion du jour</h3>
-
-      <div class="modal-label">Ce que j'ai appris aujourd'hui</div>
-      <textarea id="reflection1" placeholder="Une chose concrète et utile..."></textarea>
-
-      <div class="modal-label">Ce que j'aurais pu mieux faire</div>
-      <textarea id="reflection2" placeholder="Sois honnête avec toi-même..."></textarea>
-
-      <div class="modal-label">Mon intention pour demain</div>
-      <textarea id="reflection3" placeholder="Une action précise, pas un vœu..."></textarea>
-
-      <button class="primary-btn" style="margin-top:14px;margin-bottom:0;" onclick="saveCheckin()">SAUVEGARDER — +10 XP</button>
-    </div>
-  </div>
-
-  <div class="toast" id="toast"></div>
-
-  <script>
-    const PILLARS = [
-      { id: 'corps', name: 'Corps', icon: '💪', color: '#e85d3a', tasks: ['Boire 2L d’eau', 'Dormir 8h ce soir', 'S’étirer 10 min', 'Manger équilibré'] },
-      { id: 'esprit', name: 'Esprit', icon: '🧠', color: '#2ec4a0', tasks: ['Lire 20 min', 'Apprendre un truc', 'Méditer 5 min', 'Écrire ses pensées'] },
-      { id: 'argent', name: 'Argent', icon: '💰', color: '#e8b84b', tasks: ['Noter mes dépenses', 'Pas d’achat impulsif', 'Vérifier mon budget', 'Économiser aujourd’hui'] },
-      { id: 'orga', name: 'Orga', icon: '📋', color: '#4ade9a', tasks: ['Planifier demain', 'Finir 3 tâches', 'Ranger mon espace', 'Pas de procrastination'] },
-      { id: 'mental', name: 'Mental', icon: '🔥', color: '#e84060', tasks: ['Faire quelque chose de dur', 'Ne pas se plaindre', 'Tenir ma parole', 'Sortir de ma zone'] },
-      { id: 'social', name: 'Social', icon: '🤝', color: '#9b7fe8', tasks: ['Contacter quelqu’un', 'Écouter vraiment', 'Faire une bonne action', 'Exprimer ma gratitude'] }
-    ];
-
-    const QUOTES = [
-      { t: 'La discipline, c’est de te souvenir de ce que tu veux vraiment.', a: 'David Goggins' },
-      { t: 'Tu n’as pas à être extrême, juste constant.', a: 'James Clear' },
-      { t: 'L’obstacle est le chemin.', a: 'Marc Aurèle' },
-      { t: 'Ce que tu fais aujourd’hui est un vote pour qui tu veux devenir.', a: 'Atomic Habits' }
-    ];
-
-    const DEFAULT_CHALLENGES = [
-      { id: 'd1', pillar: 'Mental', color: '#e84060', title: 'Douche froide 7 jours', desc: 'Chaque matin, 45 secondes d’eau froide.', diff: 'Intense', xp: 60 },
-      { id: 'd2', pillar: 'Esprit', color: '#2ec4a0', title: 'Lire 20 min par jour', desc: 'Un vrai livre, pas un écran.', diff: 'Moyen', xp: 35 },
-      { id: 'd3', pillar: 'Corps', color: '#e85d3a', title: 'Zéro sucre ajouté 5 jours', desc: 'Observe ton énergie et ta clarté mentale.', diff: 'Intense', xp: 50 },
-      { id: 'd4', pillar: 'Orga', color: '#4ade9a', title: 'Se lever sans snooze', desc: 'Réveil, debout direct.', diff: 'Moyen', xp: 40 },
-      { id: 'd5', pillar: 'Argent', color: '#e8b84b', title: 'Zéro dépense inutile', desc: 'Chaque euro compte.', diff: 'Accessible', xp: 25 },
-      { id: 'd6', pillar: 'Social', color: '#9b7fe8', title: 'Appeler quelqu’un', desc: 'Une vraie conversation aujourd’hui.', diff: 'Accessible', xp: 20 }
-    ];
-
-    const BOOKS = [
-      { id: 'b1', title: 'Atomic Habits', author: 'James Clear', desc: 'Le plus actionnable sur le changement.' },
-      { id: 'b2', title: 'Can’t Hurt Me', author: 'David Goggins', desc: 'Force mentale pure.' },
-      { id: 'b3', title: 'Père Riche Père Pauvre', author: 'Robert Kiyosaki', desc: 'Base de l’éducation financière.' },
-      { id: 'b4', title: 'Pensées pour moi-même', author: 'Marc Aurèle', desc: 'Maîtrise de soi et stoïcisme.' }
-    ];
-
-    const IDENTITY = [
-      { title: 'Ta parole est ta loi', text: 'Ce que tu dis, tu le fais.' },
-      { title: 'Responsabilité totale', text: 'Tu reprends le pouvoir quand tu assumes.' },
-      { title: 'Cherche l’inconfort', text: 'La difficulté te construit.' },
-      { title: 'Construis, ne consomme pas', text: 'Crée plus que tu ne scrolles.' }
-    ];
-
-    function defaultState() {
-      return {
-        checks: {},
-        challenges: null,
-        chWeek: null,
-        challengesDone: {},
-        books: {},
-        streak: 0,
-        lastPerfectDay: null,
-        xp: 0,
-        reflections: {}
-      };
-    }
-
-    function getState() {
-      try {
-        return JSON.parse(localStorage.getItem('become_state') || 'null') || defaultState();
-      } catch (e) {
-        return defaultState();
-      }
-    }
-
-    function saveState(state) {
-      localStorage.setItem('become_state', JSON.stringify(state));
-    }
-
-    function pad(n) {
-      return n < 10 ? '0' + n : '' + n;
-    }
-
-    function todayKey() {
-      const d = new Date();
-      return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
-    }
-
-    function weekKey() {
-      const d = new Date();
-      const day = d.getDay();
-      const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-      const monday = new Date(d);
-      monday.setDate(diff);
-      return monday.getFullYear() + '-' + pad(monday.getMonth() + 1) + '-' + pad(monday.getDate());
-    }
-
-    function toast(text) {
-      const t = document.getElementById('toast');
-      t.textContent = text;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2200);
-    }
-
-    function xpForLevel(level) {
-      return 100 + level * level * 20;
-    }
-
-    function getLevel(xp) {
-      let level = 0;
-      let rest = xp;
-      let needed = xpForLevel(level);
-
-      while (rest >= needed) {
-        rest -= needed;
-        level += 1;
-        needed = xpForLevel(level);
-      }
-
-      return level;
-    }
-
-    function getXPProgress(xp) {
-      let level = 0;
-      let rest = xp;
-      let needed = xpForLevel(level);
-
-      while (rest >= needed) {
-        rest -= needed;
-        level += 1;
-        needed = xpForLevel(level);
-      }
-
-      return { level, current: rest, needed };
-    }
-
-    function getRank(level) {
-      if (level < 3) return 'Recrue';
-      if (level < 6) return 'Disciple';
-      if (level < 10) return 'Guerrier';
-      if (level < 15) return 'Élite';
-      return 'Légende';
-    }
-
-    function updateHeader() {
-      const state = getState();
-      document.getElementById('streakNum').textContent = state.streak || 0;
-      document.getElementById('xpNum').textContent = state.xp || 0;
-      document.getElementById('levelNum').textContent = getLevel(state.xp || 0);
-    }
-
-    function showView(name, btn) {
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('view-' + name).classList.add('active');
-      btn.classList.add('active');
-      document.getElementById('scrollArea').scrollTop = 0;
-
-      if (name === 'today') renderToday();
-      if (name === 'challenges') renderChallenges();
-      if (name === 'progress') renderProgress();
-      if (name === 'library') renderBooks();
-      if (name === 'identity') renderIdentity();
-    }
-
-    function renderToday() {
-      const state = getState();
-      const d = new Date();
-      const days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-      const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-
-      document.getElementById('todayDate').textContent = days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
-
-      const q = QUOTES[d.getDate() % QUOTES.length];
-      document.getElementById('quoteText').textContent = q.t;
-      document.getElementById('quoteAuthor').textContent = '— ' + q.a;
-
-      const today = todayKey();
-      const checks = state.checks[today] || {};
-      const done = PILLARS.filter(p => checks[p.id]).length;
-      const percent = Math.round(done / PILLARS.length * 100);
-
-      document.getElementById('dayPercent').textContent = percent + '%';
-      document.getElementById('dayProgressFill').style.width = percent + '%';
-
-      const titles = ['C\'est parti !', 'Bon début !', 'Bonne dynamique !', 'Tu cartonnes !', 'Presque !', 'Journée parfaite !'];
-      document.getElementById('dayTitle').textContent = titles[Math.min(done, 5)];
-
-      const xpProg = getXPProgress(state.xp || 0);
-      document.getElementById('rankText').textContent = getRank(xpProg.level);
-      document.getElementById('xpProgressText').textContent = xpProg.current + ' / ' + xpProg.needed + ' XP';
-      document.getElementById('xpProgressFill').style.width = Math.round(xpProg.current / xpProg.needed * 100) + '%';
-
-      const grid = document.getElementById('pillarsGrid');
-      let html = '';
-
-      PILLARS.forEach(p => {
-        const checked = !!checks[p.id];
-        const task = p.tasks[d.getDate() % p.tasks.length];
-        html += `
-          <div class="pillar ${checked ? 'done' : ''}" style="color:${p.color}" onclick="togglePillar('${p.id}')">
-            <div class="pillar-top">
-              <div class="pillar-icon">${p.icon}</div>
-              <div class="check">${checked ? '✓' : ''}</div>
-            </div>
-            <div class="pillar-name">${p.name}</div>
-            <div class="pillar-task">${task}</div>
-          </div>
-        `;
-      });
-
-      grid.innerHTML = html;
-      updateHeader();
-    }
-
-    function togglePillar(id) {
-      const state = getState();
-      const today = todayKey();
-
-      if (!state.checks[today]) state.checks[today] = {};
-      const already = !!state.checks[today][id];
-      state.checks[today][id] = !already;
-
-      if (!already) {
-        state.xp += 5;
-        toast('+5 XP');
-      }
-
-      const allDone = PILLARS.every(p => state.checks[today][p.id]);
-
-      if (allDone && state.lastPerfectDay !== today) {
-        state.xp += 20;
-        state.lastPerfectDay = today;
-
-        const y = new Date();
-        y.setDate(y.getDate() - 1);
-        const yKey = y.getFullYear() + '-' + pad(y.getMonth() + 1) + '-' + pad(y.getDate());
-
-        if (state.lastStreakDate === yKey) state.streak += 1;
-        else state.streak = 1;
-
-        state.lastStreakDate = today;
-        toast('Journée parfaite ! +20 XP');
-      }
-
-      saveState(state);
-      renderToday();
-    }
-
-    function renderChallenges() {
-      const state = getState();
-      let challenges = state.challenges;
-
-      if (!challenges || state.chWeek !== weekKey()) {
-        challenges = DEFAULT_CHALLENGES;
-      }
-
-      let html = '';
-      challenges.forEach(c => {
-        const done = !!state.challengesDone[c.id];
-        html += `
-          <div class="challenge ${done ? 'done' : ''}" style="border-left-color:${c.color}" onclick="toggleChallenge('${c.id}', ${c.xp})">
-            <div class="challenge-head">
-              <span>${c.pillar}</span>
-              <span>${c.diff}</span>
-            </div>
-            <div class="challenge-title">${c.title}</div>
-            <div class="challenge-desc">${c.desc}</div>
-            <div class="challenge-head">
-              <span>+${c.xp} XP</span>
-              <span>${done ? '✓ Complété' : 'Tap pour valider'}</span>
-            </div>
-          </div>
-        `;
-      });
-
-      document.getElementById('challengesList').innerHTML = html;
-      updateHeader();
-    }
-
-    function toggleChallenge(id, xp) {
-      const state = getState();
-      state.challengesDone[id] = !state.challengesDone[id];
-
-      if (state.challengesDone[id]) {
-        state.xp += xp;
-        toast('Défi complété ! +' + xp + ' XP');
-      }
-
-      saveState(state);
-      renderChallenges();
-    }
-
-    function generateChallenges() {
-      const state = getState();
-      const pool = [
-        { pillar: 'Mental', color: '#e84060', title: 'Zéro plainte pendant 24h', desc: 'Tu agis au lieu de te plaindre.', diff: 'Moyen', xp: 30 },
-        { pillar: 'Corps', color: '#e85d3a', title: '10 000 pas', desc: 'Bouge vraiment aujourd’hui.', diff: 'Accessible', xp: 25 },
-        { pillar: 'Esprit', color: '#2ec4a0', title: '30 min sans téléphone', desc: 'Lis, réfléchis ou écris.', diff: 'Moyen', xp: 35 },
-        { pillar: 'Argent', color: '#e8b84b', title: 'Noter toutes les dépenses', desc: 'Chaque euro doit être vu.', diff: 'Accessible', xp: 20 },
-        { pillar: 'Orga', color: '#4ade9a', title: 'Planifier demain', desc: 'Une journée gagnée commence la veille.', diff: 'Accessible', xp: 20 },
-        { pillar: 'Social', color: '#9b7fe8', title: 'Message utile à quelqu’un', desc: 'Apporte de la valeur à une personne.', diff: 'Accessible', xp: 20 }
-      ];
-
-      const selected = [...pool].sort(() => Math.random() - 0.5).slice(0, 6).map((c, i) => ({ ...c, id: 'g' + (i + 1) }));
-      state.challenges = selected;
-      state.chWeek = weekKey();
-      state.challengesDone = {};
-      saveState(state);
-      toast('Nouveaux défis générés');
-      renderChallenges();
-    }
-
-    function renderProgress() {
-      const state = getState();
-
-      let perfectDays = 0;
-      Object.values(state.checks).forEach(day => {
-        if (PILLARS.every(p => day[p.id])) perfectDays += 1;
-      });
-
-      const readBooks = Object.values(state.books).filter(Boolean).length;
-
-      document.getElementById('statsGrid').innerHTML = `
-        <div class="stat"><div class="stat-val">${state.streak || 0}</div><div class="stat-lbl">Streak</div></div>
-        <div class="stat"><div class="stat-val">${state.xp || 0}</div><div class="stat-lbl">XP</div></div>
-        <div class="stat"><div class="stat-val">${perfectDays}</div><div class="stat-lbl">Jours parfaits</div></div>
-        <div class="stat"><div class="stat-val">${readBooks}</div><div class="stat-lbl">Livres lus</div></div>
-      `;
-
-      let html = '';
-      PILLARS.forEach(p => {
-        let count = 0;
-        const total = Math.max(Object.keys(state.checks).length, 1);
-
-        Object.values(state.checks).forEach(day => {
-          if (day[p.id]) count += 1;
-        });
-
-        const pct = Math.round(count / total * 100);
-
-        html += `
-          <div class="card">
-            <div class="progress-meta">
-              <span>${p.icon} ${p.name}</span>
-              <span>${pct}%</span>
-            </div>
-            <div class="progress-line">
-              <div class="progress-fill" style="width:${pct}%; background:${p.color};"></div>
-            </div>
-          </div>
-        `;
-      });
-
-      document.getElementById('pillarStats').innerHTML = html;
-      updateHeader();
-    }
-
-    function renderBooks() {
-      const state = getState();
-      let html = '';
-
-      BOOKS.forEach(b => {
-        const read = !!state.books[b.id];
-        html += `
-          <div class="book">
-            <div class="book-top">
-              <div>
-                <div class="book-title">${b.title}</div>
-                <div class="book-author">${b.author}</div>
-                <div style="font-size:12px;color:var(--muted);">${b.desc}</div>
-              </div>
-              <button class="book-btn ${read ? 'read' : ''}" onclick="event.stopPropagation();toggleBook('${b.id}')">${read ? '✓' : '○'}</button>
-            </div>
-          </div>
-        `;
-      });
-
-      document.getElementById('booksList').innerHTML = html;
-      updateHeader();
-    }
-
-    function toggleBook(id) {
-      const state = getState();
-      state.books[id] = !state.books[id];
-
-      if (state.books[id]) {
-        state.xp += 100;
-        toast('Livre lu ! +100 XP');
-      }
-
-      saveState(state);
-      renderBooks();
-    }
-
-    function renderIdentity() {
-      let html = '';
-      IDENTITY.forEach(i => {
-        html += `
-          <div class="identity-card">
-            <div class="identity-title">${i.title}</div>
-            <div class="identity-text">${i.text}</div>
-          </div>
-        `;
-      });
-
-      document.getElementById('identityList').innerHTML = html;
-      updateHeader();
-    }
-
-    function openCheckin() {
-      document.getElementById('checkinModalBg').classList.add('open');
-    }
-
-    function closeCheckin() {
-      document.getElementById('checkinModalBg').classList.remove('open');
-    }
-
-    function closeCheckinOutside(e) {
-      if (e.target === document.getElementById('checkinModalBg')) closeCheckin();
-    }
-
-    function saveCheckin() {
-      const state = getState();
-      const today = todayKey();
-
-      state.reflections[today] = {
-        learned: document.getElementById('reflection1').value,
-        improve: document.getElementById('reflection2').value,
-        intention: document.getElementById('reflection3').value
-      };
-
-      state.xp += 10;
-      saveState(state);
-      closeCheckin();
-      toast('Réflexion sauvegardée — +10 XP');
-      renderToday();
-    }
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js').catch(() => {});
-      });
-    }
-
-    updateHeader();
-    renderToday();
-    renderChallenges();
-    renderIdentity();
-  </script>
+
+<div class="header">
+BECOME
+<div class="stats">
+🔥 <span id="streak">0</span> | ⚡ <span id="xp">0</span>
+</div>
+</div>
+
+<!-- HOME -->
+
+<div id="home" class="section active">
+
+<h3>🔥 Focus du jour</h3>
+<div id="focus" class="card big"></div>
+<div class="btn" onclick="newFocus()">Changer</div>
+
+<h3>⚔️ Défis</h3>
+<div id="challenges"></div>
+<div class="btn" onclick="generate()">Générer</div>
+
+<h3>🧠 Coach</h3>
+<div id="coach" class="card"></div>
+
+<div class="btn btn-danger" onclick="resetMental()">⚡ J'ai la flemme</div>
+
+</div>
+
+<!-- IDENTITY -->
+
+<div id="identity" class="section">
+<h3>🧬 Identité</h3>
+
+<div class="card">
+<div>Discipline</div>
+<div class="big" id="disciplineScore">0%</div>
+</div>
+
+<div class="card" id="identityText"></div>
+
+</div>
+
+<!-- PROGRESS -->
+
+<div id="progress" class="section">
+
+<h3>📈 Progression</h3>
+
+<div class="card" id="level"></div>
+
+<div class="card">
+Jours actifs: <span id="days">0</span>
+</div>
+
+</div>
+
+<!-- NAV -->
+
+<div class="nav">
+<button onclick="show('home',this)" class="active-btn">Accueil</button>
+<button onclick="show('identity',this)">Identité</button>
+<button onclick="show('progress',this)">Progression</button>
+</div>
+
+<script>
+
+let state = JSON.parse(localStorage.getItem("elite")||"{}");
+
+if(!state.xp) state.xp = 0;
+if(!state.streak) state.streak = 0;
+if(!state.days) state.days = 0;
+if(!state.doneToday) state.doneToday = false;
+
+const focuses = [
+"Zéro téléphone matin",
+"Deep work 2x30min",
+"1h entraînement",
+"Lecture 20min",
+"Planifier journée",
+"Discipline totale aujourd’hui"
+];
+
+const challenges = [
+"Douche froide",
+"Pas de sucre",
+"Pas de scroll",
+"10 min méditation",
+"Sortir zone confort",
+"Faire quelque chose de dur"
+];
+
+const coach = [
+"Tu n’es pas fatigué, tu es distrait.",
+"Tu sais quoi faire.",
+"Arrête de réfléchir.",
+"Ton futur dépend d’aujourd’hui.",
+"La discipline bat tout.",
+"Tu deviens ce que tu répètes."
+];
+
+function save(){
+localStorage.setItem("elite", JSON.stringify(state));
+}
+
+function newFocus(){
+document.getElementById("focus").innerText =
+focuses[Math.floor(Math.random()*focuses.length)];
+}
+
+function generate(){
+const container = document.getElementById("challenges");
+container.innerHTML = "";
+
+for(let i=0;i<3;i++){
+const c = challenges[Math.floor(Math.random()*challenges.length)];
+const div = document.createElement("div");
+
+div.className="card";
+div.innerText = c;
+
+div.onclick = ()=>{
+div.classList.toggle("done");
+
+if(div.classList.contains("done")){
+state.xp += 10;
+
+if(!state.doneToday){
+state.days += 1;
+state.streak += 1;
+state.doneToday = true;
+}
+
+update();
+}
+};
+
+container.appendChild(div);
+}
+}
+
+function loadCoach(){
+document.getElementById("coach").innerText =
+coach[Math.floor(Math.random()*coach.length)];
+}
+
+function resetMental(){
+alert("Bouge-toi. Fais UNE action maintenant.");
+state.xp -= 5;
+update();
+}
+
+function update(){
+
+document.getElementById("xp").innerText = state.xp;
+document.getElementById("streak").innerText = state.streak;
+document.getElementById("days").innerText = state.days;
+
+const level = Math.floor(state.xp/100)+1;
+
+document.getElementById("level").innerText =
+"Niveau "+level+" ("+state.xp+" XP)";
+
+let score = Math.min(100, Math.floor(state.xp/10));
+document.getElementById("disciplineScore").innerText = score+"%";
+
+let text = "";
+
+if(score<30){
+text="Tu es encore instable. Tu dois prouver par l’action.";
+}else if(score<60){
+text="Tu progresses. Mais tu n’es pas encore fiable.";
+}else if(score<80){
+text="Tu deviens discipliné. Continue.";
+}else{
+text="Tu es au-dessus de la moyenne. Ne relâche pas.";
+}
+
+document.getElementById("identityText").innerText = text;
+
+save();
+}
+
+function show(v,btn){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+document.getElementById(v).classList.add("active");
+
+document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active-btn"));
+btn.classList.add("active-btn");
+}
+
+newFocus();
+generate();
+loadCoach();
+update();
+
+</script>
+
 </body>
 </html>
