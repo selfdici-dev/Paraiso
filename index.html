@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BECOME ELITE</title>
+<title>BECOME MAX</title>
 
 <style>
 :root{
 --bg:#0a0f1a;
 --card:#111827;
 --accent:#2563eb;
---text:#fff;
---muted:#9ca3af;
 --danger:#ef4444;
 --success:#22c55e;
+--text:#fff;
+--muted:#9ca3af;
 }
 
 body{
@@ -28,12 +28,6 @@ padding:15px;
 display:flex;
 justify-content:space-between;
 background:var(--card);
-font-weight:bold;
-}
-
-.stats{
-font-size:12px;
-color:var(--muted);
 }
 
 .section{
@@ -41,13 +35,13 @@ padding:15px;
 display:none;
 }
 
-.section.active{
+.active{
 display:block;
 }
 
 .card{
 background:var(--card);
-padding:14px;
+padding:15px;
 border-radius:12px;
 margin-bottom:10px;
 }
@@ -58,21 +52,12 @@ padding:12px;
 border-radius:10px;
 text-align:center;
 margin-top:10px;
-cursor:pointer;
 }
 
-.btn-danger{
-background:var(--danger);
-}
+.red{background:var(--danger);}
+.green{background:var(--success);}
 
-.btn-success{
-background:var(--success);
-}
-
-.done{
-opacity:0.3;
-text-decoration:line-through;
-}
+.big{font-size:22px;font-weight:bold;}
 
 .nav{
 position:fixed;
@@ -87,201 +72,174 @@ flex:1;
 padding:10px;
 background:none;
 border:none;
-color:var(--muted);
+color:#9ca3af;
 }
 
-.active-btn{
-color:var(--accent);
-}
-
-.big{
-font-size:28px;
-font-weight:bold;
-}
-
+.active-btn{color:#2563eb;}
 </style>
+
 </head>
 
 <body>
 
 <div class="header">
-BECOME
-<div class="stats">
-🔥 <span id="streak">0</span> | ⚡ <span id="xp">0</span>
-</div>
+BECOME MAX
+<div>🔥 <span id="streak">0</span> | ⚡ <span id="xp">0</span></div>
 </div>
 
-<!-- HOME -->
-
+<!-- ACTION -->
 <div id="home" class="section active">
 
-<h3>🔥 Focus du jour</h3>
-<div id="focus" class="card big"></div>
-<div class="btn" onclick="newFocus()">Changer</div>
+<h3>🎯 Plan du jour</h3>
+<div id="plan" class="card big"></div>
 
-<h3>⚔️ Défis</h3>
-<div id="challenges"></div>
-<div class="btn" onclick="generate()">Générer</div>
+<h3>⚔️ Action immédiate</h3>
+<div id="action" class="card big"></div>
 
-<h3>🧠 Coach</h3>
+<div class="btn green" onclick="done()">J’ai agi</div>
+<div class="btn red" onclick="fail()">J’ai échoué</div>
+
+<h3>🧠 Coach intelligent</h3>
 <div id="coach" class="card"></div>
 
-<div class="btn btn-danger" onclick="resetMental()">⚡ J'ai la flemme</div>
+<div class="btn red" onclick="reset()">⚡ Reset mental</div>
 
 </div>
 
-<!-- IDENTITY -->
-
+<!-- IDENTITE -->
 <div id="identity" class="section">
+
 <h3>🧬 Identité</h3>
 
 <div class="card">
-<div>Discipline</div>
-<div class="big" id="disciplineScore">0%</div>
+Score discipline: <span id="score">0</span>/100
 </div>
 
 <div class="card" id="identityText"></div>
 
 </div>
 
-<!-- PROGRESS -->
+<!-- CONSEILS -->
+<div id="tips" class="section">
 
+<h3>🧠 Conseils adaptés</h3>
+<div id="tip" class="card"></div>
+
+</div>
+
+<!-- PROGRESSION -->
 <div id="progress" class="section">
 
 <h3>📈 Progression</h3>
-
 <div class="card" id="level"></div>
-
-<div class="card">
-Jours actifs: <span id="days">0</span>
-</div>
 
 </div>
 
 <!-- NAV -->
-
 <div class="nav">
-<button onclick="show('home',this)" class="active-btn">Accueil</button>
+<button onclick="show('home',this)" class="active-btn">Action</button>
 <button onclick="show('identity',this)">Identité</button>
-<button onclick="show('progress',this)">Progression</button>
+<button onclick="show('tips',this)">Conseils</button>
+<button onclick="show('progress',this)">Stats</button>
 </div>
 
 <script>
 
-let state = JSON.parse(localStorage.getItem("elite")||"{}");
+let state = JSON.parse(localStorage.getItem("max")||"{}");
 
-if(!state.xp) state.xp = 0;
-if(!state.streak) state.streak = 0;
-if(!state.days) state.days = 0;
-if(!state.doneToday) state.doneToday = false;
-
-const focuses = [
-"Zéro téléphone matin",
-"Deep work 2x30min",
-"1h entraînement",
-"Lecture 20min",
-"Planifier journée",
-"Discipline totale aujourd’hui"
-];
-
-const challenges = [
-"Douche froide",
-"Pas de sucre",
-"Pas de scroll",
-"10 min méditation",
-"Sortir zone confort",
-"Faire quelque chose de dur"
-];
-
-const coach = [
-"Tu n’es pas fatigué, tu es distrait.",
-"Tu sais quoi faire.",
-"Arrête de réfléchir.",
-"Ton futur dépend d’aujourd’hui.",
-"La discipline bat tout.",
-"Tu deviens ce que tu répètes."
-];
+if(!state.xp) state.xp=0;
+if(!state.score) state.score=0;
+if(!state.streak) state.streak=0;
 
 function save(){
-localStorage.setItem("elite", JSON.stringify(state));
+localStorage.setItem("max",JSON.stringify(state));
 }
 
-function newFocus(){
-document.getElementById("focus").innerText =
-focuses[Math.floor(Math.random()*focuses.length)];
+function generatePlan(){
+if(state.score<30){
+return "Commence simple: 1 action + pas de téléphone matin";
+}
+if(state.score<70){
+return "2 blocs focus + discipline téléphone";
+}
+return "Optimise ta journée + dépasse-toi";
 }
 
-function generate(){
-const container = document.getElementById("challenges");
-container.innerHTML = "";
-
-for(let i=0;i<3;i++){
-const c = challenges[Math.floor(Math.random()*challenges.length)];
-const div = document.createElement("div");
-
-div.className="card";
-div.innerText = c;
-
-div.onclick = ()=>{
-div.classList.toggle("done");
-
-if(div.classList.contains("done")){
-state.xp += 10;
-
-if(!state.doneToday){
-state.days += 1;
-state.streak += 1;
-state.doneToday = true;
+function generateAction(){
+const list=[
+"Commence maintenant",
+"Lance un timer 25min",
+"Fais 10 pompes",
+"Ecris ton plan",
+"Lis 5 pages"
+];
+return list[Math.floor(Math.random()*list.length)];
 }
 
-update();
+function generateCoach(){
+if(state.score<30){
+return "Tu es trop dispersé. Agis.";
 }
-};
-
-container.appendChild(div);
+if(state.score<70){
+return "Tu progresses mais tu n’es pas constant.";
 }
-}
-
-function loadCoach(){
-document.getElementById("coach").innerText =
-coach[Math.floor(Math.random()*coach.length)];
+return "Tu es solide. Continue.";
 }
 
-function resetMental(){
-alert("Bouge-toi. Fais UNE action maintenant.");
-state.xp -= 5;
-update();
+function generateTip(){
+if(state.score<30){
+return "Supprime les distractions.";
+}
+if(state.score<70){
+return "Structure ta journée.";
+}
+return "Augmente la difficulté.";
 }
 
 function update(){
 
-document.getElementById("xp").innerText = state.xp;
-document.getElementById("streak").innerText = state.streak;
-document.getElementById("days").innerText = state.days;
+document.getElementById("xp").innerText=state.xp;
+document.getElementById("score").innerText=state.score;
 
-const level = Math.floor(state.xp/100)+1;
+document.getElementById("plan").innerText=generatePlan();
+document.getElementById("action").innerText=generateAction();
+document.getElementById("coach").innerText=generateCoach();
+document.getElementById("tip").innerText=generateTip();
 
-document.getElementById("level").innerText =
-"Niveau "+level+" ("+state.xp+" XP)";
+let level=Math.floor(state.xp/100)+1;
+document.getElementById("level").innerText="Niveau "+level;
 
-let score = Math.min(100, Math.floor(state.xp/10));
-document.getElementById("disciplineScore").innerText = score+"%";
-
-let text = "";
-
-if(score<30){
-text="Tu es encore instable. Tu dois prouver par l’action.";
-}else if(score<60){
-text="Tu progresses. Mais tu n’es pas encore fiable.";
-}else if(score<80){
-text="Tu deviens discipliné. Continue.";
+let text="";
+if(state.score<30){
+text="Tu es instable.";
+}else if(state.score<70){
+text="Tu progresses.";
 }else{
-text="Tu es au-dessus de la moyenne. Ne relâche pas.";
+text="Tu es discipliné.";
 }
 
-document.getElementById("identityText").innerText = text;
+document.getElementById("identityText").innerText=text;
 
 save();
+}
+
+function done(){
+state.xp+=10;
+state.score+=2;
+state.streak+=1;
+update();
+}
+
+function fail(){
+state.score-=3;
+alert("Reprends-toi.");
+update();
+}
+
+function reset(){
+alert("Bouge maintenant.");
+state.score-=1;
+update();
 }
 
 function show(v,btn){
@@ -292,9 +250,6 @@ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active-b
 btn.classList.add("active-btn");
 }
 
-newFocus();
-generate();
-loadCoach();
 update();
 
 </script>
