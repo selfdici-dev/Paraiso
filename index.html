@@ -3,253 +3,198 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BECOME MAX</title>
+<title>BECOME</title>
 
 <style>
-:root{
---bg:#0a0f1a;
---card:#111827;
---accent:#2563eb;
---danger:#ef4444;
---success:#22c55e;
---text:#fff;
---muted:#9ca3af;
-}
-
 body{
 margin:0;
-font-family:system-ui;
-background:var(--bg);
-color:var(--text);
+font-family:-apple-system,system-ui;
+background:#0d1117;
+color:white;
 }
 
 .header{
-padding:15px;
-display:flex;
-justify-content:space-between;
-background:var(--card);
+padding:20px;
+font-size:22px;
+font-weight:bold;
 }
 
-.section{
-padding:15px;
-display:none;
-}
-
-.active{
-display:block;
+.container{
+padding:20px;
+max-width:500px;
+margin:auto;
 }
 
 .card{
-background:var(--card);
-padding:15px;
-border-radius:12px;
-margin-bottom:10px;
+background:#161b22;
+padding:18px;
+border-radius:16px;
+margin-bottom:16px;
 }
 
-.btn{
-background:var(--accent);
-padding:12px;
+.title{
+font-size:12px;
+color:#8b949e;
+margin-bottom:6px;
+}
+
+.big{
+font-size:22px;
+font-weight:bold;
+}
+
+.action{
+padding:14px;
+background:#21262d;
+border-radius:12px;
+margin-top:10px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.action.done{
+opacity:0.3;
+text-decoration:line-through;
+}
+
+.progress{
+height:8px;
+background:#21262d;
 border-radius:10px;
-text-align:center;
+overflow:hidden;
 margin-top:10px;
 }
 
-.red{background:var(--danger);}
-.green{background:var(--success);}
-
-.big{font-size:22px;font-weight:bold;}
-
-.nav{
-position:fixed;
-bottom:0;
-width:100%;
-display:flex;
-background:#0f172a;
+.progress-bar{
+height:100%;
+background:#238636;
+width:0%;
 }
 
-.nav button{
-flex:1;
-padding:10px;
-background:none;
-border:none;
-color:#9ca3af;
+.footer{
+text-align:center;
+margin-top:20px;
+color:#8b949e;
+font-size:12px;
 }
-
-.active-btn{color:#2563eb;}
 </style>
 
 </head>
 
 <body>
 
-<div class="header">
-BECOME MAX
-<div>🔥 <span id="streak">0</span> | ⚡ <span id="xp">0</span></div>
-</div>
+<div class="header">BECOME</div>
 
-<!-- ACTION -->
-<div id="home" class="section active">
-
-<h3>🎯 Plan du jour</h3>
-<div id="plan" class="card big"></div>
-
-<h3>⚔️ Action immédiate</h3>
-<div id="action" class="card big"></div>
-
-<div class="btn green" onclick="done()">J’ai agi</div>
-<div class="btn red" onclick="fail()">J’ai échoué</div>
-
-<h3>🧠 Coach intelligent</h3>
-<div id="coach" class="card"></div>
-
-<div class="btn red" onclick="reset()">⚡ Reset mental</div>
-
-</div>
-
-<!-- IDENTITE -->
-<div id="identity" class="section">
-
-<h3>🧬 Identité</h3>
+<div class="container">
 
 <div class="card">
-Score discipline: <span id="score">0</span>/100
+<div class="title">MISSION DU JOUR</div>
+<div id="mission" class="big"></div>
 </div>
 
-<div class="card" id="identityText"></div>
-
+<div class="card">
+<div class="title">ACTIONS</div>
+<div id="actions"></div>
+<div class="progress"><div id="bar" class="progress-bar"></div></div>
 </div>
 
-<!-- CONSEILS -->
-<div id="tips" class="section">
-
-<h3>🧠 Conseils adaptés</h3>
-<div id="tip" class="card"></div>
-
+<div class="card">
+<div class="title">CONSEIL</div>
+<div id="tip"></div>
 </div>
 
-<!-- PROGRESSION -->
-<div id="progress" class="section">
-
-<h3>📈 Progression</h3>
-<div class="card" id="level"></div>
-
+<div class="card">
+<div class="title">PROGRESSION</div>
+<div>Niveau <span id="level">1</span> — XP <span id="xp">0</span></div>
 </div>
 
-<!-- NAV -->
-<div class="nav">
-<button onclick="show('home',this)" class="active-btn">Action</button>
-<button onclick="show('identity',this)">Identité</button>
-<button onclick="show('tips',this)">Conseils</button>
-<button onclick="show('progress',this)">Stats</button>
+<div class="footer">
+Discipline > Motivation
+</div>
+
 </div>
 
 <script>
 
-let state = JSON.parse(localStorage.getItem("max")||"{}");
+let state = JSON.parse(localStorage.getItem("final_clean")||"{}");
+if(!state.xp) state.xp = 0;
+if(!state.done) state.done = 0;
 
-if(!state.xp) state.xp=0;
-if(!state.score) state.score=0;
-if(!state.streak) state.streak=0;
-
-function save(){
-localStorage.setItem("max",JSON.stringify(state));
-}
-
-function generatePlan(){
-if(state.score<30){
-return "Commence simple: 1 action + pas de téléphone matin";
-}
-if(state.score<70){
-return "2 blocs focus + discipline téléphone";
-}
-return "Optimise ta journée + dépasse-toi";
-}
-
-function generateAction(){
-const list=[
-"Commence maintenant",
-"Lance un timer 25min",
-"Fais 10 pompes",
-"Ecris ton plan",
-"Lis 5 pages"
+const missions = [
+"Zéro téléphone 1h après réveil",
+"Faire ce que tu évites",
+"Focus profond 1h",
+"Entraînement intense",
+"Planifier ta journée",
+"Pas de distraction aujourd’hui"
 ];
-return list[Math.floor(Math.random()*list.length)];
+
+const actionsBase = [
+"Commence maintenant",
+"Lance un timer 25 min",
+"Fais 10 pompes",
+"Lis 5 pages",
+"Ecris ton plan",
+"Range ton espace",
+"Respire et recentre-toi"
+];
+
+const tips = [
+"Tu sais déjà quoi faire.",
+"Arrête de réfléchir. Agis.",
+"Ton téléphone est ton ennemi.",
+"Fais le plus dur en premier.",
+"Commencer est la clé.",
+"Moins de choix = plus d’action.",
+"Répéter > perfection.",
+"Tu deviens ce que tu fais chaque jour.",
+"Ton futur dépend d’aujourd’hui."
+];
+
+function generate(){
+
+document.getElementById("mission").innerText =
+missions[Math.floor(Math.random()*missions.length)];
+
+const container = document.getElementById("actions");
+container.innerHTML = "";
+state.done = 0;
+
+for(let i=0;i<3;i++){
+const div = document.createElement("div");
+div.className = "action";
+div.innerText = actionsBase[Math.floor(Math.random()*actionsBase.length)];
+
+div.onclick = ()=>{
+if(!div.classList.contains("done")){
+div.classList.add("done");
+state.done++;
+state.xp += 10;
+update();
+}
+};
+
+container.appendChild(div);
 }
 
-function generateCoach(){
-if(state.score<30){
-return "Tu es trop dispersé. Agis.";
-}
-if(state.score<70){
-return "Tu progresses mais tu n’es pas constant.";
-}
-return "Tu es solide. Continue.";
-}
-
-function generateTip(){
-if(state.score<30){
-return "Supprime les distractions.";
-}
-if(state.score<70){
-return "Structure ta journée.";
-}
-return "Augmente la difficulté.";
+document.getElementById("tip").innerText =
+tips[Math.floor(Math.random()*tips.length)];
 }
 
 function update(){
 
-document.getElementById("xp").innerText=state.xp;
-document.getElementById("score").innerText=state.score;
+document.getElementById("xp").innerText = state.xp;
 
-document.getElementById("plan").innerText=generatePlan();
-document.getElementById("action").innerText=generateAction();
-document.getElementById("coach").innerText=generateCoach();
-document.getElementById("tip").innerText=generateTip();
+let level = Math.floor(state.xp / 100) + 1;
+document.getElementById("level").innerText = level;
 
-let level=Math.floor(state.xp/100)+1;
-document.getElementById("level").innerText="Niveau "+level;
+let progress = (state.done / 3) * 100;
+document.getElementById("bar").style.width = progress + "%";
 
-let text="";
-if(state.score<30){
-text="Tu es instable.";
-}else if(state.score<70){
-text="Tu progresses.";
-}else{
-text="Tu es discipliné.";
+localStorage.setItem("final_clean", JSON.stringify(state));
 }
 
-document.getElementById("identityText").innerText=text;
-
-save();
-}
-
-function done(){
-state.xp+=10;
-state.score+=2;
-state.streak+=1;
-update();
-}
-
-function fail(){
-state.score-=3;
-alert("Reprends-toi.");
-update();
-}
-
-function reset(){
-alert("Bouge maintenant.");
-state.score-=1;
-update();
-}
-
-function show(v,btn){
-document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-document.getElementById(v).classList.add("active");
-
-document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active-btn"));
-btn.classList.add("active-btn");
-}
-
+generate();
 update();
 
 </script>
