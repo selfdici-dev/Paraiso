@@ -1,203 +1,1138 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BECOME</title>
-
-<style>
-body{
-margin:0;
-font-family:-apple-system,system-ui;
-background:#0d1117;
-color:white;
-}
-
-.header{
-padding:20px;
-font-size:22px;
-font-weight:bold;
-}
-
-.container{
-padding:20px;
-max-width:500px;
-margin:auto;
-}
-
-.card{
-background:#161b22;
-padding:18px;
-border-radius:16px;
-margin-bottom:16px;
-}
-
-.title{
-font-size:12px;
-color:#8b949e;
-margin-bottom:6px;
-}
-
-.big{
-font-size:22px;
-font-weight:bold;
-}
-
-.action{
-padding:14px;
-background:#21262d;
-border-radius:12px;
-margin-top:10px;
-cursor:pointer;
-transition:0.2s;
-}
-
-.action.done{
-opacity:0.3;
-text-decoration:line-through;
-}
-
-.progress{
-height:8px;
-background:#21262d;
-border-radius:10px;
-overflow:hidden;
-margin-top:10px;
-}
-
-.progress-bar{
-height:100%;
-background:#238636;
-width:0%;
-}
-
-.footer{
-text-align:center;
-margin-top:20px;
-color:#8b949e;
-font-size:12px;
-}
-</style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#060814" />
+  <title>BECOME</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root{
+      --bg:#060814; --bg2:#0b1020; --panel:rgba(16,20,34,.9); --line:rgba(255,255,255,.08);
+      --text:#f5f7fb; --muted:#9ca3af; --cyan:#22d3ee; --violet:#8b5cf6; --emerald:#10b981;
+      --orange:#fb923c; --red:#f87171; --magenta:#e879f9; --gold:#fbbf24; --radius:20px;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{margin:0;height:100%;background:
+      radial-gradient(circle at top, rgba(139,92,246,.18), transparent 28%),
+      radial-gradient(circle at top right, rgba(34,211,238,.12), transparent 22%),
+      linear-gradient(180deg,#0b1020 0%, #070b16 45%, #05070f 100%);
+      color:var(--text); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif}
+    body{padding:0}
+    .app{max-width:520px;margin:0 auto;min-height:100vh;padding:calc(env(safe-area-inset-top) + 12px) 16px calc(env(safe-area-inset-bottom) + 90px)}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.03));border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 0 0 1px rgba(255,255,255,.02), 0 16px 40px rgba(0,0,0,.26)}
+    .row{display:flex;align-items:center}
+    .between{display:flex;align-items:center;justify-content:space-between}
+    .muted{color:var(--muted)}
+    .tiny{font-size:11px}
+    .small{font-size:13px}
+    .title{font-size:28px;font-weight:800;letter-spacing:.04em}
+    .subtitle{font-size:14px;color:var(--muted)}
+    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:12px;border:1px solid var(--line);background:rgba(255,255,255,.04)}
+    .b-easy{color:#a7f3d0;background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.28)}
+    .b-medium{color:#fdba74;background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.28)}
+    .b-hard{color:#fca5a5;background:rgba(248,113,113,.12);border-color:rgba(248,113,113,.28)}
+    .b-elite{color:#f0abfc;background:rgba(232,121,249,.12);border-color:rgba(232,121,249,.28)}
+    .btn{appearance:none;border:none;border-radius:18px;padding:14px 16px;font:inherit;color:white;background:#151a2d}
+    .btn.primary{background:linear-gradient(135deg,var(--cyan),var(--violet));box-shadow:0 10px 30px rgba(34,211,238,.22)}
+    .btn.green{background:linear-gradient(135deg,#10b981,#059669)}
+    .btn.red{background:linear-gradient(135deg,#ef4444,#be123c)}
+    .btn.ghost{background:rgba(255,255,255,.05);border:1px solid var(--line)}
+    .grid{display:grid;gap:12px}
+    .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}.mt24{margin-top:24px}
+    .p12{padding:12px}.p14{padding:14px}.p16{padding:16px}.p18{padding:18px}.p20{padding:20px}
+    .progress{height:10px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+    .bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));width:0%}
+    .tabbar{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:10px 12px calc(env(safe-area-inset-bottom) + 10px);backdrop-filter:blur(16px);background:rgba(6,8,20,.86);border-top:1px solid var(--line)}
+    .tabs{max-width:520px;width:100%;display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+    .tab{padding:10px 8px;border-radius:16px;text-align:center;font-size:12px;color:var(--muted);border:1px solid transparent}
+    .tab.active{color:white;background:rgba(255,255,255,.06);border-color:var(--line)}
+    .list{display:grid;gap:10px}
+    .pillrow{display:flex;gap:8px;overflow:auto;padding-bottom:4px}
+    .pill{white-space:nowrap;padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:12px;color:var(--muted)}
+    .pill.active{color:white;background:rgba(255,255,255,.08)}
+    input, select, textarea{
+      width:100%;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);
+      border-radius:16px;padding:14px;font:inherit;outline:none
+    }
+    .section-title{font-size:17px;font-weight:700}
+    .wordmark{display:flex;align-items:center;gap:10px}
+    .logo{
+      width:36px;height:36px;border-radius:14px;background:
+      linear-gradient(135deg,rgba(34,211,238,.25),rgba(139,92,246,.25));
+      border:1px solid rgba(255,255,255,.08);display:grid;place-items:center;font-weight:800
+    }
+    .coach{line-height:1.45}
+    .kpi{padding:12px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+    .ring{
+      width:120px;height:120px;border-radius:50%;
+      background:conic-gradient(var(--cyan) calc(var(--p)*1%), rgba(255,255,255,.08) 0);
+      display:grid;place-items:center;margin:auto
+    }
+    .ring > div{width:88px;height:88px;border-radius:50%;background:#0a1020;display:grid;place-items:center;border:1px solid var(--line)}
+    .hidden{display:none!important}
+  </style>
 </head>
-
 <body>
+  <div id="app" class="app"></div>
 
-<div class="header">BECOME</div>
+  <div class="tabbar">
+    <div class="tabs" id="tabbar"></div>
+  </div>
 
-<div class="container">
+  <script>
+    const $ = s => document.querySelector(s);
+    const $$ = s => Array.from(document.querySelectorAll(s));
 
-<div class="card">
-<div class="title">MISSION DU JOUR</div>
-<div id="mission" class="big"></div>
-</div>
+    const CHALLENGE_TEMPLATES = [
+      ["No Phone First 30","Dopamine Control","Couper l'entrée réactive"],["One Hard Thing First","Execution","Attaquer la tâche évitée"],
+      ["Deep Work Sprint","Focus","Travailler sans changer"],["Cold Start Reps","Discipline","Bouger avant négocier"],
+      ["Daily Reset Walk","Recovery","Faire retomber le bruit mental"],["Write Before Consume","Identity","Créer avant absorber"],
+      ["No Sugar Night","Energy","Protéger le sommeil"],["Difficult Conversation","Courage","Faire ce que tu évites socialement"],
+      ["Inbox Delay","Focus","Préserver ton attention"],["No Zero Day","Consistency","Une preuve visible chaque jour"],
+      ["Standards Over Mood","Mindset","Le standard avant l'état"],["Posture + Presence","Social Strength","Tenue, regard, présence"],
+      ["Morning Body Activation","Body","Déclencher l'élan physiquement"],["Task Closure","Execution","Fermer un loop par jour"],
+      ["Silence Block","Recovery","Réduire le bruit volontairement"],["Urge Surfing","Dopamine Control","Sentir l'envie sans obéir"],
+      ["Self-Trust Rebuild","Identity","Tenir une promesse simple"],["Attention Lock","Focus","Une priorité, pas cinq"],
+      ["Night Shutdown","Consistency","Terminer la journée proprement"],["Social Boldness","Courage","Initier sans attendre"]
+    ];
+    const DURATIONS = [1,3,7,14,21,30];
+    const DIFFICULTIES = ["Easy","Medium","Hard","Elite"];
+    const CATEGORIES = ["All","Discipline","Focus","Execution","Mindset","Energy","Body","Consistency","Courage","Dopamine Control","Identity","Recovery","Social Strength"];
 
-<div class="card">
-<div class="title">ACTIONS</div>
-<div id="actions"></div>
-<div class="progress"><div id="bar" class="progress-bar"></div></div>
-</div>
+    function seedChallenges(){
+      let id = 1;
+      const list = [];
+      CHALLENGE_TEMPLATES.forEach((t, i) => {
+        DURATIONS.forEach((d, j) => {
+          const difficulty = DIFFICULTIES[(i+j)%4];
+          const xp = d * (difficulty==="Easy"?18:difficulty==="Medium"?24:difficulty==="Hard"?32:42);
+          list.push({
+            id:"ch_"+id++,
+            title:`${t[0]} — ${d} ${d===1?"jour":"jours"}`,
+            difficulty, duration:d, xp, category:t[1],
+            shortDescription:t[2],
+            benefit:["Plus de contrôle","Plus d'élan","Moins de négociation","Clarté nette","Preuve d'identité","Attention plus stable"][(i+j)%6],
+            whyItMatters:"Le comportement répété construit une identité fiable.",
+            instructions:d===1?"Tiens le standard aujourd'hui, sans négocier.":`Tiens le standard pendant ${d} jours et valide une preuve chaque jour.`,
+            successCriteria:d===1?"1 journée tenue complètement.":`${d} jours tenus avec preuve quotidienne.`,
+            difficultBecause:difficulty==="Easy"?"Simple à sous-estimer.":difficulty==="Medium"?"Tu devras agir malgré une petite résistance.":difficulty==="Hard"?"Tu devras tenir quand l'humeur baisse.":"L'élite exige de la stabilité sous vraie friction.",
+            expectedOutcome:"Plus de confiance, moins de dispersion, plus de traction.",
+            saved:false
+          });
+        });
+      });
+      return list.slice(0,96);
+    }
 
-<div class="card">
-<div class="title">CONSEIL</div>
-<div id="tip"></div>
-</div>
+    function seedProtocols(){
+      const arr = [
+        ["Pas de téléphone 30 min","Réveil","Protéger l'attention","Daily","Empêche la réactivité","Renforce la maîtrise"],
+        ["Morning Reset","Après réveil","Ancrer le corps et l'intention","Daily","Évite le démarrage flou","Renforce la stabilité"],
+        ["Un bloc profond avant messages","Début de journée","Produire avant répondre","Weekdays","Empêche la journée subie","Renforce l'exécution"],
+        ["Marche après déjeuner","Après repas","Relancer l'énergie sans écran","Daily","Réduit la lourdeur","Renforce la constance"],
+        ["Evening Shutdown","Fin de journée","Fermer les boucles mentales","Daily","Protège le sommeil","Renforce le contrôle"],
+        ["Écrire avant consommer","Avant réseaux","Créer avant absorber","Daily","Évite l'identité passive","Renforce l'initiative"],
+        ["Respiration reset","Quand tu débordes","Revenir au contrôle","As needed","Casse la spirale","Renforce l'émotionnel"],
+        ["Lire avant dormir","Avant sommeil","Calmer l'esprit","Daily","Évite les écrans tardifs","Renforce la clarté"],
+        ["3 minutes de démarrage","Quand tu évites","Passer l'inertie","As needed","Évite l'attente parfaite","Renforce la reprise"],
+        ["Rangement de surface","Après travail","Réduire la friction du lendemain","Daily","Évite le chaos","Renforce l'ordre"],
+        ["Eau avant café","Réveil","Lancer proprement","Daily","Évite le pilotage automatique","Renforce le soin"],
+        ["Une question courageuse","Avant un échange","Initier","Daily","Évite l'évitement social","Renforce le courage"],
+        ["Mode avion travail","Début de bloc","Supprimer les fuites","As needed","Évite la dispersion","Renforce l'attention"],
+        ["Plan 3 priorités","Début de journée","Rendre le jour net","Daily","Évite le flou","Renforce la direction"],
+        ["Couper écrans 45 min avant lit","Soir","Préparer le sommeil","Daily","Évite la surstimulation","Renforce la récupération"],
+        ["Checklist départ","Avant sortir","Réduire la charge mentale","Daily","Évite les oublis","Renforce la fiabilité"],
+        ["Posture haute avant appel","Avant interaction","Ajuster l'état","As needed","Évite la mollesse","Renforce la présence"],
+        ["Capture idées","Quand une idée arrive","Ne pas perdre","As needed","Évite le bruit mental","Renforce la clarté"],
+        ["2 minutes de silence","Transition","Recentrer","Daily","Évite la précipitation","Renforce le calme"],
+        ["Finir un micro-loop","Avant pause","Clore au lieu d'ouvrir","Daily","Évite l'accumulation","Renforce la discipline"]
+      ];
+      return arr.map((x,i)=>({
+        id:"pr_"+(i+1), title:x[0], trigger:x[1], purpose:x[2], frequency:x[3], why:x[4], identity:x[5],
+        streak:0, completedToday:false, xp:5, active:i<8
+      }));
+    }
 
-<div class="card">
-<div class="title">PROGRESSION</div>
-<div>Niveau <span id="level">1</span> — XP <span id="xp">0</span></div>
-</div>
+    function seedMind(){
+      const base = [
+        ["La friction décide du comportement","Si le bon choix demande trop d'effort au départ, tu feras le mauvais plus souvent.","Execution","friction,design,action"],
+        ["L'humeur ne doit pas décider du standard","Un standard utile tient les jours moyens, pas seulement les bons.","Discipline","standard,mood,consistency"],
+        ["La confiance en soi vient des preuves","Tu te crois quand tu te vois agir.","Identity","proof,self-trust,identity"],
+        ["L'attention fuit avant l'exécution","Ce que tu laisses entrer prend la place de ce que tu veux produire.","Focus","attention,distraction,deep work"],
+        ["L'identité suit les preuves répétées","Tu deviens ce que tu confirmes.","Identity","identity,proof,repetition"],
+        ["La reprise rapide vaut plus que la perfection","Le vrai danger n'est pas la chute, c'est le délai avant reprise.","Recovery","restart,recovery,consistency"],
+        ["Le démarrage est souvent le vrai combat","Une fois dedans, la résistance baisse.","Execution","start,resistance,action"],
+        ["Le corps influence la volonté","Sommeil, posture, respiration et mouvement changent la qualité de décision.","Recovery","body,energy,will"],
+        ["Le flou nourrit l'évitement","Une action mal définie se repousse facilement.","Clarity","clarity,avoidance,planning"],
+        ["La dispersion détruit le respect de soi","Trop de directions = peu de preuves.","Focus","focus,dispersion,identity"]
+      ];
+      const categories = ["Focus","Discipline","Identity","Mindset","Courage","Execution","Consistency","Emotional Control","Recovery","Clarity"];
+      const extensions = [
+        "Le standard doit survivre aux jours ordinaires.","La négociation intérieure est souvent le vrai problème.","Le cadre protège mieux que la volonté brute.",
+        "Ce que tu répètes devient crédible pour ton cerveau.","L'émotion n'est pas un ordre.","Un redémarrage rapide protège l'identité.",
+        "Le comportement d'entrée décide souvent du reste de la journée.","Le système compte plus que le pic de motivation.",
+        "La preuve visible change la relation à soi.","Le courage se renforce en usage, pas en réflexion."
+      ];
+      const out = [];
+      let id=1;
+      base.forEach((b,bi)=>{
+        for(let i=0;i<10;i++){
+          out.push({
+            id:"m_"+id++,
+            title: i===0 ? b[0] : `${b[0]} ${i+1}`,
+            short:b[1],
+            full:`${b[1]} ${extensions[(bi+i)%extensions.length]}`,
+            example:["Exemple : tu bloques les apps, donc tu ne débats plus avec ton envie.","Exemple : tu définis une première action de 3 minutes, donc le démarrage devient possible.","Exemple : tu protèges 25 minutes sans messages, et l'élan réapparaît."][(bi+i)%3],
+            action:["Action : retire une friction inutile aujourd'hui.","Action : définis un standard minuscule mais non négociable.","Action : crée une preuve visible avant ce soir."][(bi+i)%3],
+            category:b[2],
+            tags:b[3].split(","),
+            saved:false
+          });
+        }
+      });
+      return out.slice(0,100);
+    }
 
-<div class="footer">
-Discipline > Motivation
-</div>
+    function seedAcademy(){
+      const lessons = [
+        ["Identité > intention","Agis comme la personne avant de la devenir.","Aujourd'hui, fais une preuve au lieu d'une promesse."],
+        ["Dopamine et distraction","Ce qui surstimule casse la stabilité de l'attention.","Retarde tes inputs pendant 30 minutes."],
+        ["Friction design","Facilite le bon comportement, complique le mauvais.","Supprime une distraction de ton environnement."],
+        ["Momentum collapse","Le vrai danger est la rupture prolongée.","Repars en moins de 5 minutes après un raté."],
+        ["Self-trust","La confiance se bâtit sur des promesses tenues.","Tiens une promesse minuscule aujourd'hui."],
+        ["Attention residue","Changer trop souvent laisse des traces mentales.","Fais 25 minutes sur une seule chose."],
+        ["Discipline émotionnelle","Ressentir n'oblige pas à obéir.","Supporte une envie sans agir dessus pendant 2 minutes."],
+        ["Restarting after failure","Reprendre vite protège l'identité.","Écris ton protocole de reprise."],
+        ["Anti-avoidance","Le flou est souvent une protection.","Rends ta prochaine action totalement concrète."],
+        ["Standards","Le standard doit tenir quand tu n'as pas envie.","Choisis un non-négociable pour ce soir."],
+        ["Focus architecture","L'environnement gagne souvent contre la volonté.","Réduis ton espace de travail à l'essentiel."],
+        ["Courage d'exécution","Faire malgré l'inconfort te change plus que comprendre.","Envoie le message évité."],
+        ["Recovery intelligence","Le repos bien placé protège la constance.","Fais une marche sans écran."],
+        ["Social strength","Présence, voix, regard : ce sont des comportements entraînables.","Initie une interaction simple."],
+        ["Reality check","Ce que tu fais compte plus que ce que tu ressens.","Écris une vérité simple sur ta journée."],
+        ["No-zero-day","Même une preuve minuscule garde l'identité vivante.","Fais 1 rep propre aujourd'hui."],
+        ["Mood independence","Ne laisse pas ton état gouverner ton standard.","Exécute la première étape malgré l'humeur."],
+        ["Execution loops","Fermer un loop vaut souvent plus qu'en ouvrir trois.","Termine une tâche ouverte."],
+        ["Clarity under stress","Le calme revient quand l'action redevient claire.","Écris les 3 prochaines actions."],
+        ["Stand tall","Le corps donne un signal au cerveau.","Tiens-toi droit 2 minutes avant une tâche difficile."],
+        ["Low-friction mornings","Le démarrage décide du reste.","Prépare ton premier geste de demain."],
+        ["Deep work basics","Une seule priorité crée l'élan.","Choisis une seule tâche forte."],
+        ["Urge surfing","Une envie n'est qu'une vague.","Observe une pulsion sans agir."],
+        ["Finish what you start","Terminer construit une identité plus dense.","Ferme un loop avant d'ouvrir autre chose."]
+      ];
+      return lessons.map((l,i)=>({id:"a_"+(i+1), title:l[0], concept:l[1], takeaway:l[2], xp:20+(i%3)*5, done:false}));
+    }
 
-</div>
+    const coachMessages = [
+      "Tu n'as pas besoin d'un meilleur plan. Tu as besoin d'un rep de plus.",
+      "Le problème n'est probablement pas le manque d'information. C'est l'absence d'exécution.",
+      "L'élan casse plus vite qu'il ne se construit. Protège aujourd'hui.",
+      "Le standard ne vaut rien s'il dépend de ton humeur.",
+      "Tu n'as pas besoin d'être prêt. Tu as besoin d'entrer.",
+      "Tu te respecteras davantage après une preuve qu'après une intention."
+    ];
 
-<script>
+    const achievementDefs = [
+      ["first_action","Premier acte","Complète une première action."],
+      ["three_day","3 jours","Tiens 3 jours de suite."],
+      ["seven_day","7 jours","Tiens 7 jours de suite."],
+      ["first_challenge","Premier défi","Termine un premier défi."],
+      ["five_challenges","5 défis","Termine 5 défis."],
+      ["ten_actions","10 actions","Valide 10 actions."],
+      ["fifty_actions","50 actions","Valide 50 actions."],
+      ["first_focus","Premier focus","Termine une session focus."],
+      ["ten_focus","10 focus","Termine 10 sessions."],
+      ["elite_week","Semaine Elite","Tiens une excellente semaine."],
+      ["no_zero","No Zero Day","Une preuve sur une journée difficile."],
+      ["relentless_return","Retour Relentless","Repars après une chute."]
+    ];
 
-let state = JSON.parse(localStorage.getItem("final_clean")||"{}");
-if(!state.xp) state.xp = 0;
-if(!state.done) state.done = 0;
+    const defaultState = {
+      xp:0, level:1, discipline:8, streak:0, longestStreak:0, lastActionDate:null,
+      rank:"Beginner", momentum:"Cold",
+      totalActions:0, totalProtocols:0, totalChallenges:0, focusSessions:0, recoveryCount:0,
+      activeChallenge:null, challengeHistory:[], savedChallengeIds:[],
+      protocols:seedProtocols(), challenges:seedChallenges(), mind:seedMind(), academy:seedAcademy(),
+      savedMindIds:[], recentMindIds:[], achievements:{},
+      debriefs:[], standards:["Pas de téléphone 30 min au réveil","Une preuve visible par jour"], antiIdentity:["La version de moi qui négocie tout","La version de moi qui attend l'envie"], focusPriority:"Faire la prochaine action sans discuter"
+    };
 
-const missions = [
-"Zéro téléphone 1h après réveil",
-"Faire ce que tu évites",
-"Focus profond 1h",
-"Entraînement intense",
-"Planifier ta journée",
-"Pas de distraction aujourd’hui"
-];
+    let state = load();
+    let currentTab = "home";
+    let challengeSearch = "", challengeCategory="All", challengeDifficulty="All", challengeDuration="All";
+    let mindSearch = "", mindCategory = "All", mindSub = "library";
+    let currentChallengeDetail = null;
+    let focusState = {open:false, minutes:25, remaining:1500, running:false, timer:null};
+    let customChallengeDraft = {title:"", category:"Execution", difficulty:"Medium", duration:7, instructions:"", why:""};
 
-const actionsBase = [
-"Commence maintenant",
-"Lance un timer 25 min",
-"Fais 10 pompes",
-"Lis 5 pages",
-"Ecris ton plan",
-"Range ton espace",
-"Respire et recentre-toi"
-];
+    function load(){
+      try{
+        const raw = localStorage.getItem("become_state_v3");
+        return raw ? JSON.parse(raw) : structuredClone(defaultState);
+      }catch(e){ return structuredClone(defaultState); }
+    }
+    function save(){ localStorage.setItem("become_state_v3", JSON.stringify(state)); }
+    function todayKey(){ return new Date().toISOString().slice(0,10); }
+    function levelProgress(){ return state.xp % 100; }
+    function rankFromDiscipline(v){ return v < 25 ? "Beginner" : v < 50 ? "Builder" : v < 75 ? "Disciplined" : "Elite"; }
+    function momentumFromStreak(streak, discipline){
+      if (streak <= 1 && discipline < 20) return "Cold";
+      if (streak < 4) return "Active";
+      if (streak < 10) return "Locked In";
+      return "Relentless";
+    }
+    function becomingLine(){
+      const d = state.discipline, s = state.streak;
+      if (d < 20) return "Tu apprends encore à te croire par des preuves simples.";
+      if (d < 40) return "Tu construis des preuves au lieu de promesses.";
+      if (d < 65) return "Tu deviens quelqu'un qui agit même quand l'élan n'est pas là.";
+      if (s >= 7) return "Tu deviens plus difficile à négocier avec toi-même.";
+      return "Tu deviens plus fiable sous résistance.";
+    }
+    function coachMessage(){ return coachMessages[(state.totalActions + state.focusSessions + state.totalChallenges) % coachMessages.length]; }
+    function difficultyBadge(diff){ return `<span class="badge b-${diff.toLowerCase()}">${diff}</span>`; }
 
-const tips = [
-"Tu sais déjà quoi faire.",
-"Arrête de réfléchir. Agis.",
-"Ton téléphone est ton ennemi.",
-"Fais le plus dur en premier.",
-"Commencer est la clé.",
-"Moins de choix = plus d’action.",
-"Répéter > perfection.",
-"Tu deviens ce que tu fais chaque jour.",
-"Ton futur dépend d’aujourd’hui."
-];
+    function gainXP(n){
+      const total = state.xp + n;
+      state.level = Math.floor(total / 100) + 1;
+      state.xp = total;
+    }
 
-function generate(){
+    function checkAchievements(){
+      if (state.totalActions >= 1) state.achievements.first_action = true;
+      if (state.totalActions >= 10) state.achievements.ten_actions = true;
+      if (state.totalActions >= 50) state.achievements.fifty_actions = true;
+      if (state.totalChallenges >= 1) state.achievements.first_challenge = true;
+      if (state.totalChallenges >= 5) state.achievements.five_challenges = true;
+      if (state.focusSessions >= 1) state.achievements.first_focus = true;
+      if (state.focusSessions >= 10) state.achievements.ten_focus = true;
+      if (state.streak >= 3) state.achievements.three_day = true;
+      if (state.streak >= 7) state.achievements.seven_day = true;
+      if (state.momentum === "Relentless") state.achievements.relentless_return = true;
+    }
 
-document.getElementById("mission").innerText =
-missions[Math.floor(Math.random()*missions.length)];
+    function normalizeState(){
+      state.rank = rankFromDiscipline(state.discipline);
+      state.momentum = momentumFromStreak(state.streak, state.discipline);
+      checkAchievements();
+      save();
+    }
 
-const container = document.getElementById("actions");
-container.innerHTML = "";
-state.done = 0;
+    function registerDailyAction(kind="action"){
+      const t = todayKey();
+      if (state.lastActionDate !== t){
+        const prev = state.lastActionDate;
+        if (prev){
+          const diff = Math.round((new Date(t) - new Date(prev)) / 86400000);
+          state.streak = diff === 1 ? state.streak + 1 : 1;
+          if (diff > 1) state.recoveryCount += 1;
+        } else state.streak = 1;
+        state.longestStreak = Math.max(state.longestStreak, state.streak);
+        state.lastActionDate = t;
+      }
+      if (kind==="action") state.totalActions += 1;
+      if (kind==="protocol") state.totalProtocols += 1;
+      normalizeState();
+    }
 
-for(let i=0;i<3;i++){
-const div = document.createElement("div");
-div.className = "action";
-div.innerText = actionsBase[Math.floor(Math.random()*actionsBase.length)];
+    function getDailyActions(){
+      const actions = [];
+      if (state.activeChallenge){
+        actions.push({id:"a_ch", title:`${state.activeChallenge.title} — avance aujourd'hui`, source:"challenge", xp:10, effort:"élevé", done:false});
+      } else {
+        actions.push({id:"a_start", title:"Choisir un défi à lancer", source:"challenge", xp:10, effort:"faible", done:false});
+      }
+      const activeProtocols = state.protocols.filter(p=>p.active).slice(0,2);
+      activeProtocols.forEach((p,i)=>actions.push({id:"a_pr_"+i, title:p.title, source:"protocol", xp:5, effort:"faible", done:p.completedToday}));
+      actions.push({id:"a_focus", title:"25 minutes de focus sur une seule priorité", source:"focus", xp:10, effort:"moyen", done:false});
+      actions.push({id:"a_truth", title:"Une vérité écrite sur ta journée", source:"mind", xp:10, effort:"faible", done:false});
+      return actions.slice(0,5);
+    }
 
-div.onclick = ()=>{
-if(!div.classList.contains("done")){
-div.classList.add("done");
-state.done++;
-state.xp += 10;
-update();
-}
-};
+    function completeAction(id, source){
+      if (source === "protocol"){
+        const p = state.protocols.find(x=>x.id===id);
+        if (!p || p.completedToday) return;
+        p.completedToday = true; p.streak += 1;
+        gainXP(5); state.discipline = Math.min(100, state.discipline + 1);
+        registerDailyAction("protocol");
+      } else {
+        gainXP(10); state.discipline = Math.min(100, state.discipline + 2);
+        registerDailyAction("action");
+      }
+      normalizeState(); render();
+    }
 
-container.appendChild(div);
-}
+    function startChallenge(id){
+      const c = state.challenges.find(x=>x.id===id);
+      if (!c) return;
+      state.activeChallenge = { id:c.id, title:c.title, duration:c.duration, difficulty:c.difficulty, xp:c.xp, category:c.category, progressDays:0, progressPct:0, streak:0, nextStep:c.instructions };
+      normalizeState(); currentTab="home"; render();
+    }
 
-document.getElementById("tip").innerText =
-tips[Math.floor(Math.random()*tips.length)];
-}
+    function advanceChallenge(){
+      if (!state.activeChallenge) return;
+      const ch = state.activeChallenge;
+      ch.progressDays += 1;
+      ch.streak += 1;
+      ch.progressPct = Math.min(100, Math.round(ch.progressDays / ch.duration * 100));
+      gainXP(10);
+      state.discipline = Math.min(100, state.discipline + 2);
+      registerDailyAction("action");
+      if (ch.progressDays >= ch.duration){
+        gainXP(ch.xp);
+        state.totalChallenges += 1;
+        state.challengeHistory.unshift({title:ch.title, finishedAt:new Date().toLocaleDateString("fr-FR"), difficulty:ch.difficulty, xp:ch.xp});
+        state.activeChallenge = null;
+      }
+      normalizeState(); render();
+    }
 
-function update(){
+    function saveChallenge(id){
+      const set = new Set(state.savedChallengeIds);
+      if (set.has(id)) set.delete(id); else set.add(id);
+      state.savedChallengeIds = Array.from(set);
+      normalizeState(); render();
+    }
 
-document.getElementById("xp").innerText = state.xp;
+    function saveMind(id){
+      const set = new Set(state.savedMindIds);
+      if (set.has(id)) set.delete(id); else set.add(id);
+      state.savedMindIds = Array.from(set);
+      const r = state.recentMindIds.filter(x=>x!==id);
+      r.unshift(id);
+      state.recentMindIds = r.slice(0,10);
+      normalizeState(); render();
+    }
 
-let level = Math.floor(state.xp / 100) + 1;
-document.getElementById("level").innerText = level;
+    function completeLesson(id){
+      const l = state.academy.find(x=>x.id===id);
+      if (!l || l.done) return;
+      l.done = true;
+      gainXP(l.xp);
+      state.discipline = Math.min(100, state.discipline + 1);
+      registerDailyAction("action");
+      normalizeState(); render();
+    }
 
-let progress = (state.done / 3) * 100;
-document.getElementById("bar").style.width = progress + "%";
+    function addDebrief(form){
+      const item = {
+        date: new Date().toLocaleDateString("fr-FR"),
+        held: form.held.value.trim(),
+        avoided: form.avoided.value.trim(),
+        why: form.why.value.trim(),
+        correction: form.correction.value.trim()
+      };
+      state.debriefs.unshift(item);
+      normalizeState(); render();
+    }
 
-localStorage.setItem("final_clean", JSON.stringify(state));
-}
+    function createCustomChallenge(form){
+      const item = {
+        id:"ch_custom_"+Date.now(),
+        title:form.title.value.trim() || "Défi personnalisé",
+        difficulty:form.difficulty.value,
+        duration:Number(form.duration.value),
+        xp:Number(form.duration.value) * (form.difficulty.value==="Easy"?18:form.difficulty.value==="Medium"?24:form.difficulty.value==="Hard"?32:42),
+        category:form.category.value,
+        shortDescription:"Défi personnalisé créé par toi.",
+        benefit:"Construit une preuve adaptée à ton vrai contexte.",
+        whyItMatters:form.why.value.trim() || "Parce que ce défi répond à une vraie friction actuelle.",
+        instructions:form.instructions.value.trim() || "Définis le standard exact et tiens-le.",
+        successCriteria:"Respecter le standard choisi jusqu'à la fin du défi.",
+        difficultBecause:"Le plus difficile sera de ne pas renégocier la règle.",
+        expectedOutcome:"Plus de traction et une preuve concrète de maîtrise.",
+        saved:false
+      };
+      state.challenges.unshift(item);
+      customChallengeDraft = {title:"", category:"Execution", difficulty:"Medium", duration:7, instructions:"", why:""};
+      normalizeState(); currentChallengeDetail = item.id; currentTab = "challenges"; render();
+    }
 
-generate();
-update();
+    function startFocus(minutes){
+      focusState.open = true;
+      focusState.minutes = minutes;
+      focusState.remaining = minutes * 60;
+      focusState.running = false;
+      render();
+    }
+    function toggleFocus(){
+      if (!focusState.open) return;
+      if (focusState.running){
+        clearInterval(focusState.timer); focusState.running = false; render(); return;
+      }
+      focusState.running = true;
+      focusState.timer = setInterval(()=>{
+        focusState.remaining -= 1;
+        if (focusState.remaining <= 0){
+          clearInterval(focusState.timer);
+          focusState.running = false;
+          state.focusSessions += 1;
+          gainXP(20);
+          state.discipline = Math.min(100, state.discipline + 2);
+          registerDailyAction("action");
+          normalizeState();
+        }
+        render(false);
+      },1000);
+      render();
+    }
+    function finishFocus(){
+      if (focusState.timer) clearInterval(focusState.timer);
+      if (focusState.remaining <= 0){
+        // already counted
+      } else {
+        state.focusSessions += 1;
+        gainXP(20);
+        state.discipline = Math.min(100, state.discipline + 1);
+        registerDailyAction("action");
+        normalizeState();
+      }
+      focusState.open = false;
+      render();
+    }
+    function closeFocus(){
+      if (focusState.timer) clearInterval(focusState.timer);
+      focusState = {open:false, minutes:25, remaining:1500, running:false, timer:null};
+      render();
+    }
 
-</script>
+    function renderTabbar(){
+      const items = [
+        ["home","Home"],["challenges","Challenges"],["protocols","Protocols"],["mind","Mind"],["stats","Stats"]
+      ];
+      $("#tabbar").innerHTML = items.map(([id,label])=>
+        `<button class="tab ${currentTab===id?'active':''}" onclick="goTab('${id}')">${label}</button>`
+      ).join("");
+    }
 
+    function goTab(id){ currentTab=id; currentChallengeDetail=null; render(); }
+    window.goTab = goTab;
+
+    function homeView(){
+      const actions = getDailyActions();
+      return `
+        <div class="between">
+          <div>
+            <div class="wordmark">
+              <div class="logo">B</div>
+              <div>
+                <div class="title">BECOME</div>
+                <div class="subtitle">Système de boost personnel</div>
+              </div>
+            </div>
+          </div>
+          <div class="badge">Lvl ${state.level}</div>
+        </div>
+
+        <div class="grid2 mt20">
+          <div class="kpi"><div class="tiny muted">XP total</div><div style="font-size:22px;font-weight:800">${state.xp}</div></div>
+          <div class="kpi"><div class="tiny muted">Discipline</div><div style="font-size:22px;font-weight:800">${state.discipline}/100</div></div>
+          <div class="kpi"><div class="tiny muted">Rang</div><div style="font-size:20px;font-weight:800">${state.rank}</div></div>
+          <div class="kpi"><div class="tiny muted">Momentum</div><div style="font-size:20px;font-weight:800">${state.momentum}</div></div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="tiny muted">Qui tu deviens</div>
+          <div class="mt8" style="font-size:18px;font-weight:700;line-height:1.4">${becomingLine()}</div>
+          <div class="mt12 progress"><div class="bar" style="width:${levelProgress()}%"></div></div>
+          <div class="tiny muted mt8">Progression niveau ${state.level}</div>
+        </div>
+
+        ${
+          state.activeChallenge ? `
+          <div class="card p18 mt16">
+            <div class="between">
+              <div>
+                <div class="section-title">Défi actif</div>
+                <div class="small muted mt8">${state.activeChallenge.title}</div>
+              </div>
+              ${difficultyBadge(state.activeChallenge.difficulty)}
+            </div>
+            <div class="grid2 mt12">
+              <div class="kpi"><div class="tiny muted">Jour</div><div style="font-size:20px;font-weight:800">${state.activeChallenge.progressDays}/${state.activeChallenge.duration}</div></div>
+              <div class="kpi"><div class="tiny muted">Streak défi</div><div style="font-size:20px;font-weight:800">${state.activeChallenge.streak}</div></div>
+            </div>
+            <div class="mt12 progress"><div class="bar" style="width:${state.activeChallenge.progressPct}%"></div></div>
+            <div class="small muted mt8">Prochaine étape : ${state.activeChallenge.nextStep}</div>
+            <button class="btn primary mt16" style="width:100%" onclick="advanceChallenge()">Continuer le défi</button>
+          </div>` :
+          `<div class="card p18 mt16">
+            <div class="section-title">Défi suggéré</div>
+            <div class="small muted mt8">Le meilleur levier maintenant : construire une preuve rapide.</div>
+            <div class="mt12">${challengeCard(state.challenges.find(x=>x.category==='Focus' && x.duration===7) || state.challenges[0], true)}</div>
+          </div>`
+        }
+
+        <div class="card p18 mt16">
+          <div class="between">
+            <div class="section-title">Exécution du jour</div>
+            <div class="tiny muted">générée automatiquement</div>
+          </div>
+          <div class="list mt12">
+            ${actions.map(a=>`
+              <div class="card p14">
+                <div class="between">
+                  <div style="max-width:75%">
+                    <div style="font-weight:700">${a.title}</div>
+                    <div class="tiny muted mt8">${a.source} · ${a.effort} · +${a.xp} XP</div>
+                  </div>
+                  <button class="btn ghost" onclick="completeAction('${a.id}','${a.source}')">Valider</button>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="card p18 mt16" style="background:linear-gradient(135deg, rgba(34,211,238,.13), rgba(139,92,246,.18)); border-color:rgba(255,255,255,.1)">
+          <div class="section-title">Start Focus Mode</div>
+          <div class="small muted mt8">Une priorité. Pas de changement. Pas de fuite.</div>
+          <div class="grid2 mt12">
+            <button class="btn primary" onclick="startFocus(10)">10 min</button>
+            <button class="btn primary" onclick="startFocus(25)">25 min</button>
+            <button class="btn primary" onclick="startFocus(45)">45 min</button>
+          </div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="tiny muted">Coach</div>
+          <div class="coach mt8" style="font-size:18px;font-weight:700">${coachMessage()}</div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Reality Check</div>
+          <div class="small muted mt8">Ce qui compte : ce que tu as tenu, ce que tu as évité, et ce que tu corriges demain.</div>
+          <form class="mt12" onsubmit="event.preventDefault(); addDebrief(this); this.reset();">
+            <input name="held" placeholder="Qu'as-tu tenu aujourd'hui ?" />
+            <div class="mt8"></div>
+            <input name="avoided" placeholder="Qu'as-tu évité ?" />
+            <div class="mt8"></div>
+            <input name="why" placeholder="Pourquoi ça a cassé ?" />
+            <div class="mt8"></div>
+            <input name="correction" placeholder="Quelle correction pour demain ?" />
+            <button class="btn green mt12" style="width:100%">Enregistrer le debrief</button>
+          </form>
+          ${state.debriefs[0] ? `
+            <div class="card p14 mt12">
+              <div class="tiny muted">${state.debriefs[0].date}</div>
+              <div class="small mt8"><b>Tenu :</b> ${state.debriefs[0].held || '—'}</div>
+              <div class="small mt8"><b>Évité :</b> ${state.debriefs[0].avoided || '—'}</div>
+              <div class="small mt8"><b>Correction :</b> ${state.debriefs[0].correction || '—'}</div>
+            </div>` : ``
+          }
+        </div>
+
+        ${
+          state.momentum === "Cold" ? `
+          <div class="card p18 mt16">
+            <div class="section-title">Recovery Mode</div>
+            <div class="small muted mt8">Tu n'as pas besoin d'un reset héroïque. Tu as besoin d'une reprise propre.</div>
+            <div class="list mt12">
+              <div class="card p14"><b>1.</b> Une preuve minuscule avant ce soir.</div>
+              <div class="card p14"><b>2.</b> Pas de téléphone 30 min demain matin.</div>
+              <div class="card p14"><b>3.</b> Un seul bloc de 10 minutes sur ta priorité.</div>
+            </div>
+          </div>` : ``
+        }
+      `;
+    }
+
+    function challengeCard(c, suggested=false){
+      const isSaved = state.savedChallengeIds.includes(c.id);
+      return `
+        <div class="card p16">
+          <div class="between">
+            <div style="max-width:75%">
+              <div style="font-weight:800">${c.title}</div>
+              <div class="small muted mt8">${c.category} · ${c.duration} ${c.duration===1?'jour':'jours'} · +${c.xp} XP</div>
+            </div>
+            ${difficultyBadge(c.difficulty)}
+          </div>
+          <div class="small mt12">${c.shortDescription}</div>
+          <div class="tiny muted mt8">Bénéfice : ${c.benefit}</div>
+          <div class="grid2 mt12">
+            <button class="btn ghost" onclick="openChallenge('${c.id}')">Détails</button>
+            ${suggested
+              ? `<button class="btn primary" onclick="startChallenge('${c.id}')">Start</button>`
+              : `<button class="btn ${isSaved ? '' : 'primary'}" onclick="saveChallenge('${c.id}')">${isSaved ? 'Retiré' : 'Sauver'}</button>`}
+          </div>
+        </div>
+      `;
+    }
+
+    function challengeDetailView(c){
+      const isSaved = state.savedChallengeIds.includes(c.id);
+      return `
+        <button class="btn ghost" onclick="closeChallengeDetail()">← Retour</button>
+        <div class="card p20 mt16">
+          <div class="between">
+            <div>
+              <div class="section-title">${c.title}</div>
+              <div class="small muted mt8">${c.category} · ${c.duration} ${c.duration===1?'jour':'jours'} · +${c.xp} XP</div>
+            </div>
+            ${difficultyBadge(c.difficulty)}
+          </div>
+
+          <div class="grid2 mt16">
+            <div class="kpi"><div class="tiny muted">Ce que ça améliore</div><div class="small mt8">${c.benefit}</div></div>
+            <div class="kpi"><div class="tiny muted">Résultat attendu</div><div class="small mt8">${c.expectedOutcome}</div></div>
+          </div>
+
+          <div class="mt16">
+            <div class="tiny muted">Description</div>
+            <div class="small mt8">${c.shortDescription}</div>
+          </div>
+          <div class="mt16">
+            <div class="tiny muted">Pourquoi c'est important</div>
+            <div class="small mt8">${c.whyItMatters}</div>
+          </div>
+          <div class="mt16">
+            <div class="tiny muted">Instructions exactes</div>
+            <div class="small mt8">${c.instructions}</div>
+          </div>
+          <div class="mt16">
+            <div class="tiny muted">Critère de réussite</div>
+            <div class="small mt8">${c.successCriteria}</div>
+          </div>
+          <div class="mt16">
+            <div class="tiny muted">Pourquoi c'est difficile</div>
+            <div class="small mt8">${c.difficultBecause}</div>
+          </div>
+
+          <div class="grid2 mt20">
+            <button class="btn ${isSaved ? '' : 'ghost'}" onclick="saveChallenge('${c.id}')">${isSaved ? 'Retiré des sauvegardes' : 'Save for later'}</button>
+            <button class="btn primary" onclick="startChallenge('${c.id}')">Start Challenge</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function challengesView(){
+      if (currentChallengeDetail){
+        const c = state.challenges.find(x=>x.id===currentChallengeDetail);
+        return challengeDetailView(c);
+      }
+
+      const list = state.challenges.filter(c => {
+        const q = challengeSearch.trim().toLowerCase();
+        const okQ = !q || c.title.toLowerCase().includes(q) || c.category.toLowerCase().includes(q) || c.shortDescription.toLowerCase().includes(q);
+        const okCat = challengeCategory === "All" || c.category === challengeCategory;
+        const okDiff = challengeDifficulty === "All" || c.difficulty === challengeDifficulty;
+        const okDur = challengeDuration === "All" || String(c.duration) === String(challengeDuration);
+        return okQ && okCat && okDiff && okDur;
+      });
+
+      const saved = state.challenges.filter(c=>state.savedChallengeIds.includes(c.id)).slice(0,6);
+      const starter = state.challenges.filter(c=>c.duration<=3 && (c.difficulty==="Easy" || c.difficulty==="Medium")).slice(0,6);
+      const elite = state.challenges.filter(c=>c.difficulty==="Elite").slice(0,6);
+      const recommended = state.challenges.filter(c=>["Focus","Execution","Identity"].includes(c.category)).slice(0,6);
+
+      return `
+        <div class="between">
+          <div class="section-title">Challenges</div>
+          <div class="badge">${state.challenges.length} défis</div>
+        </div>
+
+        <div class="mt12"><input placeholder="Rechercher un défi" value="${escapeHtml(challengeSearch)}" oninput="challengeSearch=this.value; render(false)" /></div>
+
+        <div class="pillrow mt12">
+          ${CATEGORIES.map(c=>`<button class="pill ${challengeCategory===c?'active':''}" onclick="challengeCategory='${c}'; render(false)">${c}</button>`).join("")}
+        </div>
+
+        <div class="grid2 mt12">
+          <select onchange="challengeDifficulty=this.value; render(false)">
+            <option ${challengeDifficulty==='All'?'selected':''}>All</option>
+            <option ${challengeDifficulty==='Easy'?'selected':''}>Easy</option>
+            <option ${challengeDifficulty==='Medium'?'selected':''}>Medium</option>
+            <option ${challengeDifficulty==='Hard'?'selected':''}>Hard</option>
+            <option ${challengeDifficulty==='Elite'?'selected':''}>Elite</option>
+          </select>
+          <select onchange="challengeDuration=this.value; render(false)">
+            <option ${challengeDuration==='All'?'selected':''}>All</option>
+            ${DURATIONS.map(d=>`<option value="${d}" ${String(challengeDuration)===String(d)?'selected':''}>${d} jours</option>`).join("")}
+          </select>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Recommandés</div>
+          <div class="list mt12">${recommended.map(c=>challengeCard(c)).join("")}</div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Starter</div>
+          <div class="list mt12">${starter.map(c=>challengeCard(c)).join("")}</div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Elite</div>
+          <div class="list mt12">${elite.map(c=>challengeCard(c)).join("")}</div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Saved</div>
+          <div class="list mt12">${saved.length ? saved.map(c=>challengeCard(c)).join("") : `<div class="small muted">Aucun défi sauvegardé.</div>`}</div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Créer ton défi</div>
+          <form class="mt12" onsubmit="event.preventDefault(); createCustomChallenge(this); this.reset();">
+            <input name="title" placeholder="Titre du défi" />
+            <div class="mt8"></div>
+            <select name="category">${CATEGORIES.filter(x=>x!=="All").map(c=>`<option>${c}</option>`).join("")}</select>
+            <div class="mt8"></div>
+            <select name="difficulty">${DIFFICULTIES.map(c=>`<option>${c}</option>`).join("")}</select>
+            <div class="mt8"></div>
+            <select name="duration">${DURATIONS.map(c=>`<option value="${c}">${c} jours</option>`).join("")}</select>
+            <div class="mt8"></div>
+            <input name="instructions" placeholder="Instructions exactes" />
+            <div class="mt8"></div>
+            <input name="why" placeholder="Pourquoi ça compte" />
+            <button class="btn green mt12" style="width:100%">Créer le défi</button>
+          </form>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Tous les défis</div>
+          <div class="list mt12">${list.slice(0,18).map(c=>challengeCard(c)).join("")}</div>
+        </div>
+      `;
+    }
+
+    function protocolsView(){
+      const active = state.protocols.filter(p=>p.active);
+      const suggested = state.protocols.filter(p=>!p.active).slice(0,8);
+      return `
+        <div class="section-title">Protocols</div>
+        <div class="card p18 mt16">
+          <div class="small"><b>Un Protocol</b>, ce n'est pas une habitude mignonne. C'est une réponse décidée à l'avance à un moment de faiblesse, de friction, de distraction ou de transition.</div>
+          <div class="small muted mt12">But : éviter de renégocier avec toi-même quand le moment arrive.</div>
+        </div>
+
+        <div class="grid2 mt16">
+          <div class="kpi"><div class="tiny muted">Actifs</div><div style="font-size:22px;font-weight:800">${active.length}</div></div>
+          <div class="kpi"><div class="tiny muted">Complétés aujourd'hui</div><div style="font-size:22px;font-weight:800">${state.protocols.filter(p=>p.completedToday).length}</div></div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Active Protocols</div>
+          <div class="list mt12">
+            ${active.map(p=>`
+              <div class="card p16">
+                <div class="between">
+                  <div style="max-width:72%">
+                    <div style="font-weight:800">${p.title}</div>
+                    <div class="tiny muted mt8">${p.trigger} · ${p.frequency} · +${p.xp} XP</div>
+                  </div>
+                  <button class="btn ${p.completedToday?'':'green'}" onclick="completeAction('${p.id}','protocol')">${p.completedToday?'Fait':'Valider'}</button>
+                </div>
+                <div class="small mt12">${p.purpose}</div>
+                <div class="tiny muted mt8">Pourquoi : ${p.why}</div>
+                <div class="tiny muted mt8">Identité renforcée : ${p.identity}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Suggested Protocols</div>
+          <div class="list mt12">
+            ${suggested.map(p=>`
+              <div class="card p16">
+                <div class="between">
+                  <div style="max-width:76%">
+                    <div style="font-weight:800">${p.title}</div>
+                    <div class="tiny muted mt8">${p.trigger} · ${p.frequency}</div>
+                  </div>
+                  <button class="btn primary" onclick="activateProtocol('${p.id}')">Activer</button>
+                </div>
+                <div class="small mt12">${p.purpose}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function mindView(){
+      const categoryOptions = ["All","Focus","Discipline","Identity","Mindset","Courage","Execution","Consistency","Emotional Control","Recovery","Clarity"];
+      const mindList = state.mind.filter(m=>{
+        const q = mindSearch.trim().toLowerCase();
+        const okQ = !q || m.title.toLowerCase().includes(q) || m.short.toLowerCase().includes(q) || m.tags.join(" ").toLowerCase().includes(q);
+        const okC = mindCategory==="All" || m.category===mindCategory;
+        return okQ && okC;
+      });
+      const featured = state.mind[(state.totalActions + state.focusSessions) % state.mind.length];
+      const saved = state.mind.filter(m=>state.savedMindIds.includes(m.id)).slice(0,8);
+      const recent = state.recentMindIds.map(id=>state.mind.find(x=>x.id===id)).filter(Boolean).slice(0,6);
+
+      return `
+        <div class="between">
+          <div class="section-title">Mind</div>
+          <div class="badge">${mindSub==="library" ? 'Library' : 'Academy'}</div>
+        </div>
+
+        <div class="pillrow mt12">
+          <button class="pill ${mindSub==='library'?'active':''}" onclick="mindSub='library'; render(false)">Library</button>
+          <button class="pill ${mindSub==='academy'?'active':''}" onclick="mindSub='academy'; render(false)">Academy</button>
+        </div>
+
+        ${
+          mindSub === "library" ? `
+          <div class="card p18 mt16">
+            <div class="tiny muted">Principle of the day</div>
+            <div style="font-size:20px;font-weight:800" class="mt8">${featured.title}</div>
+            <div class="small mt12">${featured.full}</div>
+            <div class="small muted mt12">${featured.action}</div>
+          </div>
+
+          <div class="mt16"><input placeholder="Rechercher un principe" value="${escapeHtml(mindSearch)}" oninput="mindSearch=this.value; render(false)" /></div>
+          <div class="pillrow mt12">
+            ${categoryOptions.map(c=>`<button class="pill ${mindCategory===c?'active':''}" onclick="mindCategory='${c}'; render(false)">${c}</button>`).join("")}
+          </div>
+
+          <div class="card p18 mt16">
+            <div class="section-title">Saved</div>
+            <div class="list mt12">
+              ${saved.length ? saved.map(m=>mindCard(m)).join("") : `<div class="small muted">Aucun principe sauvegardé.</div>`}
+            </div>
+          </div>
+
+          <div class="card p18 mt16">
+            <div class="section-title">Recently viewed</div>
+            <div class="list mt12">
+              ${recent.length ? recent.map(m=>mindCard(m)).join("") : `<div class="small muted">Rien de récent pour l'instant.</div>`}
+            </div>
+          </div>
+
+          <div class="card p18 mt16">
+            <div class="section-title">Library</div>
+            <div class="list mt12">
+              ${mindList.slice(0,24).map(m=>mindCard(m)).join("")}
+            </div>
+          </div>
+          ` : `
+          <div class="grid2 mt16">
+            <div class="kpi"><div class="tiny muted">Leçons finies</div><div style="font-size:22px;font-weight:800">${state.academy.filter(a=>a.done).length}/${state.academy.length}</div></div>
+            <div class="kpi"><div class="tiny muted">XP Academy</div><div style="font-size:22px;font-weight:800">${state.academy.filter(a=>a.done).reduce((n,a)=>n+a.xp,0)}</div></div>
+          </div>
+
+          <div class="card p18 mt16">
+            <div class="section-title">Academy</div>
+            <div class="list mt12">
+              ${state.academy.map(a=>`
+                <div class="card p16">
+                  <div class="between">
+                    <div style="max-width:72%">
+                      <div style="font-weight:800">${a.title}</div>
+                      <div class="tiny muted mt8">+${a.xp} XP</div>
+                    </div>
+                    <button class="btn ${a.done?'':'primary'}" onclick="completeLesson('${a.id}')">${a.done?'Fait':'Valider'}</button>
+                  </div>
+                  <div class="small mt12">${a.concept}</div>
+                  <div class="small muted mt12">${a.takeaway}</div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+          `
+        }
+      `;
+    }
+
+    function mindCard(m){
+      const saved = state.savedMindIds.includes(m.id);
+      return `
+        <div class="card p16">
+          <div class="between">
+            <div style="max-width:74%">
+              <div style="font-weight:800">${m.title}</div>
+              <div class="tiny muted mt8">${m.category} · ${m.tags.join(", ")}</div>
+            </div>
+            <button class="btn ${saved?'':'ghost'}" onclick="saveMind('${m.id}')">${saved?'Saved':'Save'}</button>
+          </div>
+          <div class="small mt12">${m.short}</div>
+          <div class="small muted mt12">${m.action}</div>
+        </div>
+      `;
+    }
+
+    function statsView(){
+      const achievements = achievementDefs.map(a=>({id:a[0], title:a[1], desc:a[2], done:!!state.achievements[a[0]]}));
+      const weeklyConsistency = Math.min(100, Math.round((state.streak/7)*100));
+      const monthlyConsistency = Math.min(100, Math.round((state.streak/30)*100));
+
+      return `
+        <div class="section-title">Stats</div>
+
+        <div class="grid2 mt16">
+          <div class="kpi"><div class="tiny muted">XP total</div><div style="font-size:24px;font-weight:800">${state.xp}</div></div>
+          <div class="kpi"><div class="tiny muted">Niveau</div><div style="font-size:24px;font-weight:800">${state.level}</div></div>
+          <div class="kpi"><div class="tiny muted">Streak actuel</div><div style="font-size:24px;font-weight:800">${state.streak}</div></div>
+          <div class="kpi"><div class="tiny muted">Meilleur streak</div><div style="font-size:24px;font-weight:800">${state.longestStreak}</div></div>
+          <div class="kpi"><div class="tiny muted">Actions</div><div style="font-size:24px;font-weight:800">${state.totalActions}</div></div>
+          <div class="kpi"><div class="tiny muted">Protocols</div><div style="font-size:24px;font-weight:800">${state.totalProtocols}</div></div>
+          <div class="kpi"><div class="tiny muted">Défis terminés</div><div style="font-size:24px;font-weight:800">${state.totalChallenges}</div></div>
+          <div class="kpi"><div class="tiny muted">Focus sessions</div><div style="font-size:24px;font-weight:800">${state.focusSessions}</div></div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="between">
+            <div>
+              <div class="tiny muted">Identity</div>
+              <div style="font-size:22px;font-weight:800" class="mt8">${state.rank}</div>
+              <div class="small muted mt8">${becomingLine()}</div>
+            </div>
+            <div class="ring" style="--p:${state.discipline}">
+              <div>
+                <div style="text-align:center">
+                  <div class="tiny muted">Discipline</div>
+                  <div style="font-size:22px;font-weight:800">${state.discipline}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid2 mt16">
+            <div class="kpi"><div class="tiny muted">Momentum</div><div style="font-size:20px;font-weight:800">${state.momentum}</div></div>
+            <div class="kpi"><div class="tiny muted">Recovery count</div><div style="font-size:20px;font-weight:800">${state.recoveryCount}</div></div>
+          </div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Standards</div>
+          <div class="list mt12">
+            ${state.standards.map(s=>`<div class="card p14 small">${s}</div>`).join("")}
+          </div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Anti-identity</div>
+          <div class="list mt12">
+            ${state.antiIdentity.map(s=>`<div class="card p14 small">${s}</div>`).join("")}
+          </div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Consistency</div>
+          <div class="small muted mt8">Semaine</div>
+          <div class="progress mt8"><div class="bar" style="width:${weeklyConsistency}%"></div></div>
+          <div class="small muted mt12">Mois</div>
+          <div class="progress mt8"><div class="bar" style="width:${monthlyConsistency}%"></div></div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Achievements</div>
+          <div class="list mt12">
+            ${achievements.map(a=>`
+              <div class="card p14 between">
+                <div style="max-width:70%">
+                  <div style="font-weight:800">${a.title}</div>
+                  <div class="tiny muted mt8">${a.desc}</div>
+                </div>
+                <div class="badge ${a.done?'b-easy':''}">${a.done?'Unlocked':'Locked'}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="card p18 mt16">
+          <div class="section-title">Challenge history</div>
+          <div class="list mt12">
+            ${state.challengeHistory.length ? state.challengeHistory.map(h=>`
+              <div class="card p14">
+                <div style="font-weight:800">${h.title}</div>
+                <div class="tiny muted mt8">${h.finishedAt} · ${h.difficulty} · +${h.xp} XP</div>
+              </div>
+            `).join("") : `<div class="small muted">Aucun défi terminé pour l'instant.</div>`}
+          </div>
+        </div>
+      `;
+    }
+
+    function focusOverlay(){
+      if (!focusState.open) return "";
+      const m = Math.floor(focusState.remaining/60).toString().padStart(2,'0');
+      const s = (focusState.remaining%60).toString().padStart(2,'0');
+      const pct = Math.round(((focusState.minutes*60 - focusState.remaining)/(focusState.minutes*60))*100);
+      return `
+        <div style="position:fixed;inset:0;background:rgba(3,6,12,.96);z-index:30;padding:24px;display:flex;align-items:center;justify-content:center">
+          <div style="width:100%;max-width:420px">
+            <div class="card p20">
+              <div class="between">
+                <div class="section-title">Focus Mode</div>
+                <button class="btn ghost" onclick="closeFocus()">Fermer</button>
+              </div>
+              <div class="small muted mt12">Priorité : ${state.focusPriority}</div>
+              <div class="ring mt24" style="--p:${pct}">
+                <div><div style="font-size:28px;font-weight:800">${m}:${s}</div></div>
+              </div>
+              <div class="grid2 mt24">
+                <button class="btn primary" onclick="toggleFocus()">${focusState.running?'Pause':'Start'}</button>
+                <button class="btn green" onclick="finishFocus()">Finish</button>
+              </div>
+              <div class="small muted mt16">Récompense : +20 XP quand la session est tenue.</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function activateProtocol(id){
+      const p = state.protocols.find(x=>x.id===id);
+      if (!p) return;
+      p.active = true;
+      normalizeState(); render();
+    }
+
+    function openChallenge(id){ currentChallengeDetail=id; render(false); }
+    function closeChallengeDetail(){ currentChallengeDetail=null; render(false); }
+
+    function escapeHtml(str){
+      return String(str || "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;");
+    }
+
+    window.completeAction = completeAction;
+    window.startChallenge = startChallenge;
+    window.advanceChallenge = advanceChallenge;
+    window.saveChallenge = saveChallenge;
+    window.saveMind = saveMind;
+    window.completeLesson = completeLesson;
+    window.addDebrief = addDebrief;
+    window.createCustomChallenge = createCustomChallenge;
+    window.startFocus = startFocus;
+    window.toggleFocus = toggleFocus;
+    window.finishFocus = finishFocus;
+    window.closeFocus = closeFocus;
+    window.activateProtocol = activateProtocol;
+    window.openChallenge = openChallenge;
+    window.closeChallengeDetail = closeChallengeDetail;
+
+    function render(updateTabbar=true){
+      normalizeState();
+      if (updateTabbar) renderTabbar();
+
+      let html = "";
+      if (currentTab === "home") html = homeView();
+      if (currentTab === "challenges") html = challengesView();
+      if (currentTab === "protocols") html = protocolsView();
+      if (currentTab === "mind") html = mindView();
+      if (currentTab === "stats") html = statsView();
+
+      $("#app").innerHTML = html + focusOverlay();
+      if (updateTabbar) renderTabbar();
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+    }
+
+    normalizeState();
+    render();
+  </script>
 </body>
 </html>
